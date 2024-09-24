@@ -1,0 +1,78 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+@import "normalize.css";
+@import "variables.css";
+
+/* 텍스트 렌더링 최적화 설정 */
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 기본 body 스타일 */
+body {
+  font-family: var(--font-family);
+  line-height: normal;
+  font-style: normal;
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-black);
+}
+
+/* 타이포그래피 스타일 */
+.typo-30-bold {
+  font-size: var(--font-size-30);
+  font-weight: 700;
+}
+
+.typo-24-bold {
+  font-size: var(--font-size-24);
+  font-weight: 700;
+}
+
+.typo-20-regular {
+  font-size: var(--font-size-20);
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.typo-18-bold {
+  font-size: var(--font-size-18);
+  font-weight: 700;
+}
+
+.typo-18-regular {
+  font-size: var(--font-size-18);
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.typo-16-bold {
+  font-size: var(--font-size-16);
+  font-weight: 700;
+}
+
+.typo-16-medium {
+  font-size: var(--font-size-16);
+  font-weight: 500;
+}
+
+.typo-16-regular {
+  font-size: var(--font-size-16);
+  font-weight: 400;
+}
+
+.typo-14-bold {
+  font-size: var(--font-size-14);
+  font-weight: 700;
+}
+
+.typo-14-regular {
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
+
+.typo-12-regular {
+  font-size: var(--font-size-12);
+  font-weight: 400;
+}
