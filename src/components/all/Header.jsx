@@ -1,31 +1,21 @@
 import Logo from "@components/all/Logo";
+import Button from "@components/all/Button";
+import "./Header.css";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ button = false }) {
   return (
-    <header
-      style={{
-        backgroundColor: "#FAFAFA",
-        width: "100%",
-        height: "100px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          width: "1920px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Link to="/">
-          <div style={{ cursor: "pointer" }}>
+    <header className="header">
+      <div className="header-content">
+        <div className="header-empty-space"></div>
+        <div className="header-logo">
+          <Link to="/">
             <Logo />
-          </div>
-        </Link>
+          </Link>
+        </div>
+        <div className="header-button">
+          {button && <Button size="small">그룹 만들기</Button>}
+        </div>
       </div>
     </header>
   );

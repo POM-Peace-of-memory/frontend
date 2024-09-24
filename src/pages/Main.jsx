@@ -1,9 +1,9 @@
-import Header from '@components/all/Header';
+import Header from "@components/all/Header";
 
 export default function Main() {
   return (
     <>
-      <Header />
+      <Header button={true} />
     </>
   );
 }
