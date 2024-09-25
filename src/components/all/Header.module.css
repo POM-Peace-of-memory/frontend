@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  position: sticky;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  background-color: var(--gray-50);
+  box-sizing: border-box;
+  padding: 0 10%;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.headerContent > div {
+  width: 200px;
+}
+
+.headerLogo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0px 50px;
+}

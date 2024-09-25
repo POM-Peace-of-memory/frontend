@@ -1,0 +1,80 @@
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  min-width: max-content;
+  box-sizing: border-box;
+  padding: 0 10%;
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggleButton {
+  display: inline-flex;
+  height: 45px;
+  padding: 13px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 22.5px;
+  border: none;
+}
+
+.toggleSelected {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  height: 45px;
+  padding: 0 2%;
+  gap: 1%;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--gray-100);
+}
+
+.searchInput img {
+  width: 24.307px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.searchInput input {
+  border: none;
+  background-color: var(--gray-100);
+  width: 100%;
+}
+
+.searchInput input::placeholder {
+  /* Spoqa Han Sans Neo 폰트 적용 시 placeholder 띄어쓰기가 되지 않는 문제에 따라 별도 폰트 지정 */
+  font-family: sans-serif;
+  color: var(--gray-400);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
+
+.filterDropdown {
+  width: 160px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  background: var(--gray-50);
+  padding: 0 10px;
+}
+
+.filterDropdown option {
+  margin: 20px;
+}
