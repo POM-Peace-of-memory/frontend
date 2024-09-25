@@ -10,13 +10,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body {
-  min-width: 850px;
-  width: 100%;
-  overflow-x: auto;
-}
-
 /* 기본 body 스타일 */
 body {
   font-family: var(--font-family);
