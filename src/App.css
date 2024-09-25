@@ -1,4 +1,7 @@
-/* 임시 스타일 가이드 - 세팅 완료 후 삭제 */
+p {
+  font-family: "Spoqa Han Sans Neo", sans-serif;
+}
+
 .typography {
   padding: 10px;
 }
