@@ -6,15 +6,10 @@ import styles from "./CardList.module.css";
 
 const CardList = ({ isPublic, variant, cards }) => {
   const getEmptyStateText = () => {
-    if (variant === "group" && isPublic)
+    if (variant === "group")
       return {
-        mainText: "등록된 공개 그룹이 없습니다.",
+        mainText: "등록된 그룹이 없습니다.",
         subText: "가장 먼저 그룹을 만들어보세요!",
-      };
-    else if (variant === "group" && !isPublic)
-      return {
-        mainText: "등록된 비공개 그룹이 없습니다.",
-        subText: "가장 먼저 비공개 그룹을 만들어보세요!",
       };
     else if (variant === "memory")
       return {
@@ -22,6 +17,12 @@ const CardList = ({ isPublic, variant, cards }) => {
         subText: "첫 번째 추억을 올려보세요!",
       };
   };
+
+  const getFilteredList = () => {
+    if (isPublic) return cards.filter((card) => card.isPublic === true);
+    return cards.filter((card) => card.isPublic === false);
+  };
+  const filteredList = getFilteredList();
 
   const renderEmptyState = () => {
     const { mainText, subText } = getEmptyStateText();
@@ -42,8 +43,8 @@ const CardList = ({ isPublic, variant, cards }) => {
   const renderCards = () => (
     <div className={styles.cardList}>
       <div className={styles.cardGrid}>
-        {cards.map((card) => (
-          <GroupCard key={card.id}></GroupCard>
+        {filteredList.map((card) => (
+          <GroupCard key={card.id} card={card} />
         ))}
       </div>
       <LoadMoreButton />
