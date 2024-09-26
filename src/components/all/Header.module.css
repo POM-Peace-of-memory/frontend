@@ -5,6 +5,7 @@
   align-items: center;
   height: 100px;
   width: 100%;
+  min-width: 965px;
   background-color: var(--gray-50);
   box-sizing: border-box;
   padding: 0 10%;

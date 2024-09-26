@@ -17,6 +17,7 @@ body {
   font-style: normal;
   letter-spacing: var(--letter-spacing);
   color: var(--color-black);
+  background-color: var(--gray-50);
 }
 
 /* 타이포그래피 스타일 */

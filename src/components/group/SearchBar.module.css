@@ -4,9 +4,10 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  min-width: max-content;
+  min-width: 965px;
   box-sizing: border-box;
   padding: 0 10%;
+  margin-top: 40px;
 }
 
 .toggleContainer {
