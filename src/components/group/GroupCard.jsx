@@ -1,21 +1,13 @@
+import { calculateDDay, formatNumber } from "@/utils/utils";
 import styles from "./GroupCard.module.css";
 import flower from "@/assets/flower.svg";
 
 export default function GroupCard({ card }) {
-  const caculateDDay = (createdAt) => {
-    const today = new Date();
-    const createdDate = new Date(createdAt);
-    const diffTime = today - createdDate;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    return diffDays;
-  };
-
   const renderPrivateCard = () => {
     return (
       <div className={styles.groupCard} style={{ height: "156px" }}>
         <div className={styles.statesContainer}>
-          <span className="typo-14-regular">{`D+${caculateDDay(
+          <span className="typo-14-regular">{`D+${calculateDDay(
             card.createdAt
           )}`}</span>
           <span className="typo-14-regular">|</span>
@@ -33,7 +25,9 @@ export default function GroupCard({ card }) {
             <span className="typo-12-regular">그룹 공감</span>
             <div>
               <img src={flower} alt="공감" />
-              <span className="typo-14-regular">{card.likeCount}</span>
+              <span className="typo-14-regular">
+                {formatNumber(card.likeCount)}
+              </span>
             </div>
           </div>
         </div>
@@ -48,7 +42,7 @@ export default function GroupCard({ card }) {
           <img src={flower} alt="그룹이미지" />
         </div>
         <div className={styles.statesContainer}>
-          <span className="typo-14-regular">{`D+${caculateDDay(
+          <span className="typo-14-regular">{`D+${calculateDDay(
             card.createdAt
           )}`}</span>
           <span className="typo-14-regular">|</span>
@@ -71,7 +65,9 @@ export default function GroupCard({ card }) {
             <span className="typo-12-regular">그룹 공감</span>
             <div>
               <img src={flower} alt="공감" />
-              <span className="typo-14-regular">{card.likeCount}</span>
+              <span className="typo-14-regular">
+                {formatNumber(card.likeCount)}
+              </span>
             </div>
           </div>
         </div>
