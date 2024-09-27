@@ -1,10 +1,7 @@
-import { useState } from "react";
 import styles from "./SearchBar.module.css";
 import search from "@/assets/search.svg";
 
-const ToggleButton = () => {
-  const [isPublic, setIsPublic] = useState(true);
-
+const ToggleButton = ({ isPublic, setIsPublic }) => {
   const setButtonClass = (buttonState) => {
     return `typo-14-bold ${styles.toggleButton} ${
       isPublic === buttonState ? styles.toggleSelected : ""
@@ -54,10 +51,10 @@ const FilterDropdown = () => {
   );
 };
 
-const SearchBar = () => {
+const SearchBar = ({ isPublic, setIsPublic }) => {
   return (
     <div className={styles.searchBar}>
-      <ToggleButton />
+      <ToggleButton isPublic={isPublic} setIsPublic={setIsPublic} />
       <SearchInput />
       <FilterDropdown />
     </div>

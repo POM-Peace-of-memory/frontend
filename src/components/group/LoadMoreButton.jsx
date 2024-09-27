@@ -1,4 +1,4 @@
-const LoadMoreButton = () => {
+export default function LoadMoreButton() {
   const handleLoadMore = () => {};
 
   return (
@@ -13,6 +13,7 @@ const LoadMoreButton = () => {
         borderRadius: "6px",
         border: "1px solid var(--black)",
         backgroundColor: "var(--gray-50)",
+        cursor: "pointer",
       }}
       className="typo-14-bold"
       onClick={handleLoadMore}
@@ -20,6 +21,4 @@ const LoadMoreButton = () => {
       더보기
     </button>
   );
-};
-
-export default LoadMoreButton;
+}
