@@ -1,10 +1,13 @@
 import { useState, useRef } from "react";
 import styles from "./Post.module.css";
+import UploadButton from "../all/Button";
+import UploadPermissionModal from "./UploadPermissionModal";
 
 export default function Post() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [tags, setTags] = useState([]);
   const [isPublic, setIsPublic] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -32,8 +35,12 @@ export default function Post() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //form 제출 처리 로직 (API 요청 등)
     console.log("Form submitted with: ", { selectedFile, tags, isPublic });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -141,10 +148,10 @@ export default function Post() {
             />
           </section>
         </form>
-        <button type="submit" className={styles.submitButton}>
-          올리기
-        </button>
+        <UploadButton onClick={() => setIsModalOpen(true)}>올리기</UploadButton>
       </div>
+
+      {isModalOpen && <UploadPermissionModal closeModal={closeModal} />}
     </div>
   );
 }
