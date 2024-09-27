@@ -50,9 +50,9 @@ export default function GroupCard({ card }) {
           />
         )}
         <div className={styles.statesContainer}>
-          <span className="typo-14-regular">{`D+${calculateDDay(
-            card.createdAt
-          )}`}</span>
+          <span className="typo-14-regular">
+            {calculateDDay(card.createdAt)}
+          </span>
           <span className="typo-14-regular">|</span>
           <span className="typo-14-regular">공개</span>
         </div>
