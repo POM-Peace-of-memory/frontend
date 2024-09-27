@@ -38,9 +38,17 @@ export default function GroupCard({ card }) {
   const renderPublicCard = () => {
     return (
       <div className={styles.groupCard}>
-        <div className={styles.groupImg}>
-          <img src={flower} alt="그룹이미지" />
-        </div>
+        {card.imageUrl === "" ? (
+          <div className={styles.groupImg}>
+            <img src={flower} alt="그룹이미지" />
+          </div>
+        ) : (
+          <img
+            className={styles.groupImg}
+            src={card.imageUrl}
+            alt="그룹이미지"
+          />
+        )}
         <div className={styles.statesContainer}>
           <span className="typo-14-regular">{`D+${calculateDDay(
             card.createdAt

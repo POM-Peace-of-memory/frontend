@@ -7,7 +7,8 @@ const mockData = [
   {
     id: 1,
     name: "에델바이스",
-    imageUrl: "https://example.com/images/edelweiss.jpg",
+    imageUrl:
+      "https://kukka-2-media-123.s3.amazonaws.com/media/contents/event_template/7f9e2405-0bcb-41b5-a8fd-a49873d6692c.jpg",
     isPublic: true,
     likeCount: 1500,
     badgeCount: 2,
@@ -18,7 +19,8 @@ const mockData = [
   {
     id: 2,
     name: "바위솔",
-    imageUrl: "https://example.com/images/sedum.jpg",
+    // imageUrl: "https://example.com/images/sedum.jpg",
+    imageUrl: "",
     isPublic: true,
     likeCount: 800,
     badgeCount: 4,
@@ -29,7 +31,8 @@ const mockData = [
   {
     id: 3,
     name: "구절초",
-    imageUrl: "https://example.com/images/gujeolcho.jpg",
+    // imageUrl: "https://example.com/images/gujeolcho.jpg",
+    imageUrl: "",
     isPublic: false,
     likeCount: 230,
     badgeCount: 1,
@@ -40,7 +43,8 @@ const mockData = [
   {
     id: 4,
     name: "라벤더",
-    imageUrl: "https://example.com/images/lavender.jpg",
+    // imageUrl: "https://example.com/images/lavender.jpg",
+    imageUrl: "",
     isPublic: true,
     likeCount: 1200,
     badgeCount: 6,
@@ -51,7 +55,8 @@ const mockData = [
   {
     id: 5,
     name: "안개꽃",
-    imageUrl: "https://example.com/images/babysbreath.jpg",
+    // imageUrl: "https://example.com/images/babysbreath.jpg",
+    imageUrl: "",
     isPublic: false,
     likeCount: 560,
     badgeCount: 3,
@@ -62,7 +67,8 @@ const mockData = [
   {
     id: 6,
     name: "장미",
-    imageUrl: "https://example.com/images/rose.jpg",
+    // imageUrl: "https://example.com/images/rose.jpg",
+    imageUrl: "",
     isPublic: false,
     likeCount: 450,
     badgeCount: 2,
@@ -73,7 +79,8 @@ const mockData = [
   {
     id: 7,
     name: "선인장",
-    imageUrl: "https://example.com/images/cactus.jpg",
+    // imageUrl: "https://example.com/images/cactus.jpg",
+    imageUrl: "",
     isPublic: false,
     likeCount: 320,
     badgeCount: 1,
