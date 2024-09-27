@@ -25,7 +25,7 @@ const mockData = [
     likeCount: 800,
     badgeCount: 4,
     postCount: 12,
-    createdAt: "2023-02-15T09:20:30.003Z",
+    createdAt: "2022-02-15T09:20:30.003Z",
     introduction: "바위처럼 굳건히 함께하는 정원사들의 모임입니다.",
   },
   {
@@ -91,12 +91,39 @@ const mockData = [
 ];
 
 export default function Main() {
-  const [isPublic, setIsPublic] = useState(true);
+  const [filter, setFilter] = useState({
+    isPublic: true,
+    search: "",
+    order: "likeCount",
+  });
+
+  const getFilteredList = () => {
+    const compare = (a, b) => {
+      if (filter.order === "createdAt") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      return b[filter.order] - a[filter.order];
+    };
+
+    if (filter.search === "") {
+      return mockData
+        .filter((group) => group.isPublic === filter.isPublic)
+        .sort(compare);
+    }
+    return mockData
+      .filter(
+        (group) =>
+          group.isPublic === filter.isPublic &&
+          group.name.toLowerCase().includes(filter.search.toLowerCase())
+      )
+      .sort(compare);
+  };
+  const filteredList = getFilteredList();
   return (
     <>
       <Header button />
-      <SearchBar isPublic={isPublic} setIsPublic={setIsPublic} />
-      <CardList isPublic={isPublic} variant="group" cards={mockData} />
+      <SearchBar setFilter={setFilter} />
+      <CardList variant="group" cards={filteredList} />
     </>
   );
 }

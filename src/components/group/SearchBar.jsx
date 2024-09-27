@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
-import search from "@/assets/search.svg";
+import searchIcon from "@/assets/search.svg";
 
 const ToggleButton = ({ isPublic, setIsPublic }) => {
   const setButtonClass = (buttonState) => {
@@ -30,33 +31,56 @@ const ToggleButton = ({ isPublic, setIsPublic }) => {
   );
 };
 
-const SearchInput = () => {
+const SearchInput = ({ search, setSearch }) => {
+  const onChangeSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <div className={styles.searchInput}>
       <div>
-        <img src={search} alt="검색" />
+        <img src={searchIcon} alt="검색" />
       </div>
-      <input type="text" placeholder="그룹명을 검색해 주세요" />
+      <input
+        type="text"
+        value={search}
+        onChange={onChangeSearch}
+        placeholder="그룹명을 검색해 주세요"
+      />
     </div>
   );
 };
 
-const FilterDropdown = () => {
+const FilterDropdown = ({ setOrder }) => {
+  const onChangeSelect = (e) => {
+    setOrder(e.target.value);
+  };
   return (
-    <select className={`typo-14-regular ${styles.filterDropdown}`}>
-      <option>공감순</option>
-      <option>최신순</option>
-      <option>댓글순</option>
+    <select
+      onChange={onChangeSelect}
+      className={`typo-14-regular ${styles.filterDropdown}`}
+    >
+      <option value="likeCount">공감순</option>
+      <option value="createdAt">최신순</option>
+      <option value="postCount">추억순</option>
     </select>
   );
 };
 
-const SearchBar = ({ isPublic, setIsPublic }) => {
+const SearchBar = ({ setFilter }) => {
+  const [isPublic, setIsPublic] = useState(true);
+  const [search, setSearch] = useState("");
+  const [order, setOrder] = useState("likeCount");
+
+  useEffect(() => {
+    setFilter({ isPublic, search, order });
+  }, [isPublic, search, order, setFilter]);
+
   return (
     <div className={styles.searchBar}>
       <ToggleButton isPublic={isPublic} setIsPublic={setIsPublic} />
-      <SearchInput />
-      <FilterDropdown />
+      <SearchInput search={search} setSearch={setSearch} />
+      <FilterDropdown setOrder={setOrder} />
     </div>
   );
 };
