@@ -1,7 +1,6 @@
 import empty from "@assets/empty.svg";
 import Button from "@components/all/Button";
 import GroupCard from "@/components/group/GroupCard";
-import LoadMoreButton from "@/components/group/LoadMoreButton";
 import styles from "./CardList.module.css";
 
 const CardList = ({ variant, cards }) => {
@@ -41,7 +40,6 @@ const CardList = ({ variant, cards }) => {
           <GroupCard key={card.id} card={card} />
         ))}
       </div>
-      <LoadMoreButton />
     </div>
   );
 
