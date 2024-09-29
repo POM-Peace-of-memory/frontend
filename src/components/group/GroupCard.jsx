@@ -7,9 +7,9 @@ export default function GroupCard({ card }) {
     return (
       <div className={styles.groupCard} style={{ height: "156px" }}>
         <div className={styles.statesContainer}>
-          <span className="typo-14-regular">{`D+${calculateDDay(
-            card.createdAt
-          )}`}</span>
+          <span className="typo-14-regular">
+            {calculateDDay(card.createdAt)}
+          </span>
           <span className="typo-14-regular">|</span>
           <span className="typo-14-regular">비공개</span>
         </div>

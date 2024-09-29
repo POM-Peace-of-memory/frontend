@@ -1,10 +1,9 @@
 import empty from "@assets/empty.svg";
 import Button from "@components/all/Button";
 import GroupCard from "@/components/group/GroupCard";
-import LoadMoreButton from "@/components/group/LoadMoreButton";
 import styles from "./CardList.module.css";
 
-const CardList = ({ isPublic, variant, cards }) => {
+const CardList = ({ variant, cards }) => {
   const getEmptyStateText = () => {
     if (variant === "group")
       return {
@@ -17,12 +16,6 @@ const CardList = ({ isPublic, variant, cards }) => {
         subText: "첫 번째 추억을 올려보세요!",
       };
   };
-
-  const getFilteredList = () => {
-    if (isPublic) return cards.filter((card) => card.isPublic === true);
-    return cards.filter((card) => card.isPublic === false);
-  };
-  const filteredList = getFilteredList();
 
   const renderEmptyState = () => {
     const { mainText, subText } = getEmptyStateText();
@@ -43,11 +36,10 @@ const CardList = ({ isPublic, variant, cards }) => {
   const renderCards = () => (
     <div className={styles.cardList}>
       <div className={styles.cardGrid}>
-        {filteredList.map((card) => (
+        {cards.map((card) => (
           <GroupCard key={card.id} card={card} />
         ))}
       </div>
-      <LoadMoreButton />
     </div>
   );
 
