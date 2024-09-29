@@ -2,9 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 965px;
-  padding: 0 10%;
-  box-sizing: border-box;
 }
 
 .cardGrid {
@@ -20,7 +17,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 965px;
   margin-top: 200px;
 }
 

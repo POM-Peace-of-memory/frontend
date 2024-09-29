@@ -10,7 +10,5 @@ export async function getGroups({
   const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&isPublic=${isPublic}&keyword=${keyword}`;
   const response = await fetch(`${BASE_URL}/groups?${query}`);
   const body = await response.json();
-  console.log(query);
-  console.log(body);
   return body;
 }
