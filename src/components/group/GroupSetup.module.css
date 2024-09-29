@@ -1,0 +1,54 @@
+.groupSetup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 60px;
+  margin: 40px 0px;
+}
+
+.groupForm {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 400px;
+  gap: 40px;
+}
+
+.groupForm > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.formInput {
+  height: 45px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  padding-left: 20px;
+  background: var(--gray-50);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
+
+.formInput:focus {
+  outline: none;
+  border: 1px solid var(--black);
+}
+
+.groupForm textarea {
+  height: 120px;
+  padding-top: 14px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.formToggle {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}

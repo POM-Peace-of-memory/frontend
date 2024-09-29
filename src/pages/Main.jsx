@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../components/group/MainLayout";
 import Header from "@components/all/Header";
 import SearchBar from "@/components/group/SearchBar";
@@ -15,6 +16,11 @@ export default function Main() {
     search: "",
     order: "mostLiked",
   });
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
 
   const handleLoad = async (options) => {
     let result;
@@ -53,13 +59,11 @@ export default function Main() {
   }, [filter]);
 
   return (
-    <>
-      <MainLayout>
-        <Header button />
-        <SearchBar setFilter={setFilter} />
-        <CardList variant="group" cards={data} />
-        <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
-      </MainLayout>
-    </>
+    <MainLayout>
+      <Header button buttonHandler={handleRegister} />
+      <SearchBar setFilter={setFilter} />
+      <CardList variant="group" cards={data} />
+      <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
+    </MainLayout>
   );
 }
