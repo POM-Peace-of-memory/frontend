@@ -1,12 +1,11 @@
 import Header from "@components/all/Header";
-import Post from "@components/feed/Post";
+import PostComponent from "@components/feed/Post";
 
-export default function Main() {
+export default function Post() {
   return (
     <>
       <Header />
-      <Post />
+      <PostComponent />
     </>
   );
 }
-
