@@ -1,9 +1,8 @@
 import { useState, useRef } from "react";
-import styles from "./Post.module.css";
-import UploadButton from "../all/Button";
-import UploadPermissionModal from "./UploadPermissionModal";
+import styles from "./Modify.module.css";
+import ModifyButton from "../all/Button";
 
-export default function Post() {
+export default function Modify() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [tags, setTags] = useState([]);
   const [isPublic, setIsPublic] = useState(false);
@@ -108,7 +107,7 @@ export default function Post() {
             <label className={styles.label}>태그</label>
             <input
               className={styles.input}
-              placeholder="#태그 선택"
+              placeholder="태그 입력 후 Enter"
               onKeyUp={handleTagInput}
             />
             <div className={styles.tagsWrapper}>
@@ -141,17 +140,18 @@ export default function Post() {
               </label>
             </div>
 
-            <label className={styles.label}>비밀번호 생성</label>
+            <label className={styles.label}>수정 권한 인증</label>
             <input
               className={styles.input}
               placeholder="추억 비밀번호를 생성해 주세요"
             />
           </section>
         </form>
-        <UploadButton onClick={() => setIsModalOpen(true)}>올리기</UploadButton>
+        <ModifyButton onClick={() => setIsModalOpen(true)}>
+          수정하기
+        </ModifyButton>
       </div>
-
-      {isModalOpen && <UploadPermissionModal closeModal={closeModal} />}
+      {isModalOpen && closeModal}
     </div>
   );
 }
