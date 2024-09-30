@@ -3,7 +3,7 @@ import Button from "@components/all/Button";
 import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
 
-export default function Header({ button = false, buttonHandler = "" }) {
+export default function Header({ button = false, buttonHandler = () => {} }) {
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>

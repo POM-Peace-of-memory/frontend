@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getGroups } from "@/utils/api";
 import MainLayout from "../components/group/MainLayout";
 import Header from "@components/all/Header";
 import SearchBar from "@/components/group/SearchBar";
 import CardList from "@/components/group/CardList";
 import LoadMoreButton from "@/components/group/LoadMoreButton";
-import { getGroups } from "@/utils/api";
 
 export default function Main() {
   const [data, setData] = useState([]);
@@ -62,7 +62,7 @@ export default function Main() {
     <MainLayout>
       <Header button buttonHandler={handleRegister} />
       <SearchBar setFilter={setFilter} />
-      <CardList variant="group" cards={data} />
+      <CardList variant="memory" cards={data} />
       <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
     </MainLayout>
   );

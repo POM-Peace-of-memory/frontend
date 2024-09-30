@@ -27,9 +27,17 @@
   cursor: pointer;
 }
 
+.toggleButton:hover {
+  background-color: var(--gray-100);
+}
+
 .toggleSelected {
   background-color: var(--black);
   color: var(--white);
+}
+
+.toggleSelected:hover {
+  background-color: var(--black);
 }
 
 .searchInput {
