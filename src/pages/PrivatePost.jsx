@@ -1,11 +1,11 @@
 import Header from "@components/all/Header";
-import PrivatePost from "@components/feed/PrivatePost";
+import PrivatePostComponent from "@components/feed/PrivatePost";
 
-export default function Main() {
+export default function PrivatePost() {
   return (
     <>
       <Header />
-      <PrivatePost />
+      <PrivatePostComponent />
     </>
   );
 }
