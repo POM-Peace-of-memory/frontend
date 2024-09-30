@@ -22,8 +22,9 @@ export default function GroupSetup() {
   const handleChange = (e) => {
     const { id } = e.target;
     let value;
+
     if (id === "isPublic") value = e.target.checked;
-    if (id === "image") value = e.target.files[0];
+    else if (id === "image") value = e.target.files[0];
     else value = e.target.value;
 
     setValues((prev) => ({

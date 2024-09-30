@@ -38,6 +38,10 @@
   font-weight: 400;
 }
 
+.formInput::placeholder {
+  color: var(--gray-400);
+}
+
 .formInput:focus {
   outline: none;
   border: 1px solid var(--black);
@@ -63,7 +67,7 @@
   padding-top: 14px;
   padding-left: 20px;
   box-sizing: border-box;
-  color: rgb(117, 117, 117);
+  color: var(--gray-400);
 }
 
 .selected {

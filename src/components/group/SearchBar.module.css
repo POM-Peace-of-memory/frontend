@@ -67,8 +67,10 @@
 
 .searchInput input::placeholder {
   color: var(--gray-400);
-  font-size: var(--font-size-14);
-  font-weight: 400;
+}
+
+.searchInput input:focus {
+  outline: none;
 }
 
 .filterDropdown {
