@@ -11,29 +11,31 @@ const CardList = ({ variant, cards }) => {
     if (variant === "group") navigate("/register");
     else navigate("/feed");
   };
-  const getEmptyStateText = () => {
-    if (variant === "group")
-      return {
-        mainText: "등록된 그룹이 없습니다.",
-        subText: "가장 먼저 그룹을 만들어보세요!",
-      };
-    else
-      return {
-        mainText: "게시된 추억이 없습니다.",
-        subText: "첫 번째 추억을 올려보세요!",
-      };
+
+  const emptyStateText = {
+    group: {
+      mainText: "등록된 그룹이 없습니다.",
+      subText: "가장 먼저 그룹을 만들어보세요!",
+    },
+    memory: {
+      mainText: "게시된 추억이 없습니다.",
+      subText: "첫 번째 추억을 올려보세요!",
+    },
   };
 
   const renderEmptyState = () => {
-    const { mainText, subText } = getEmptyStateText();
     return (
       <div className={styles.emptyList}>
         <div className={styles.emptyImg}>
           <img src={empty} alt="데이터없음" />
         </div>
         <div className={styles.emptyDescription}>
-          <span className="typo-18-bold">{mainText}</span>
-          <span className="typo-14-regular">{subText}</span>
+          <span className="typo-18-bold">
+            {emptyStateText[variant].mainText}
+          </span>
+          <span className="typo-14-regular">
+            {emptyStateText[variant].subText}
+          </span>
         </div>
         <Button onClick={handleButtonClick}>
           {variant === "group" ? "그룹 만들기" : "추억 올리기"}

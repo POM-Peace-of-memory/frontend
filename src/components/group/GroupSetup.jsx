@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createGroups, uploadImage } from "@/utils/api";
 import styles from "./GroupSetup.module.css";
 import toggleStyles from "@components/feed/Post.module.css";
 import Button from "@components/all/Button";
+import OkModal from "./OkModal";
 
 const INITIAL_VALUES = {
   name: "",
@@ -15,8 +15,9 @@ const INITIAL_VALUES = {
 
 export default function GroupSetup() {
   const [values, setValues] = useState(INITIAL_VALUES);
+  const [open, setOpen] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("");
   const fileInputRef = useRef();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id } = e.target;
@@ -44,11 +45,13 @@ export default function GroupSetup() {
         isPublic: values.isPublic,
         introduction: values.introduction,
       });
+      setSubmitStatus("createSuccess");
     } catch (error) {
       console.log(error);
+      setSubmitStatus("createFail");
     }
     console.log(values);
-    navigate("/");
+    setOpen(true);
   };
 
   return (
@@ -129,6 +132,7 @@ export default function GroupSetup() {
         </div>
         <Button style={{ marginTop: "20px" }}>만들기</Button>
       </form>
+      {open && <OkModal handleModal={setOpen} varient={submitStatus} />}
     </div>
   );
 }

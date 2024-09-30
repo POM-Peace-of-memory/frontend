@@ -62,7 +62,7 @@ export default function Main() {
     <MainLayout>
       <Header button buttonHandler={handleRegister} />
       <SearchBar setFilter={setFilter} />
-      <CardList variant="memory" cards={data} />
+      <CardList variant="group" cards={data} />
       <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
     </MainLayout>
   );
