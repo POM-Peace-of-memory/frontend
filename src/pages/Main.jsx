@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getGroups } from "@/utils/api";
-import MainLayout from "../components/group/MainLayout";
+import PageLayout from "../components/group/PageLayout";
 import Header from "@components/all/Header";
 import SearchBar from "@/components/group/SearchBar";
 import CardList from "@/components/group/CardList";
@@ -59,11 +59,11 @@ export default function Main() {
   }, [filter]);
 
   return (
-    <MainLayout>
+    <PageLayout>
       <Header button buttonHandler={handleRegister} />
-      <SearchBar setFilter={setFilter} />
+      <SearchBar variant="group" setFilter={setFilter} />
       <CardList variant="group" cards={data} />
       <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
-    </MainLayout>
+    </PageLayout>
   );
 }

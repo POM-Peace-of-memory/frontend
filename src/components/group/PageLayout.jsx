@@ -1,4 +1,4 @@
-export default function MainLayout({ children }) {
+export default function PageLayout({ children }) {
   return (
     <div
       style={{

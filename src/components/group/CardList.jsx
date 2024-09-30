@@ -4,6 +4,17 @@ import Button from "@components/all/Button";
 import GroupCard from "@/components/group/GroupCard";
 import styles from "./CardList.module.css";
 
+const emptyStateText = {
+  group: {
+    mainText: "등록된 그룹이 없습니다.",
+    subText: "가장 먼저 그룹을 만들어보세요!",
+  },
+  memory: {
+    mainText: "게시된 추억이 없습니다.",
+    subText: "첫 번째 추억을 올려보세요!",
+  },
+};
+
 const CardList = ({ variant, cards }) => {
   const navigate = useNavigate();
 
@@ -12,20 +23,12 @@ const CardList = ({ variant, cards }) => {
     else navigate("/feed");
   };
 
-  const emptyStateText = {
-    group: {
-      mainText: "등록된 그룹이 없습니다.",
-      subText: "가장 먼저 그룹을 만들어보세요!",
-    },
-    memory: {
-      mainText: "게시된 추억이 없습니다.",
-      subText: "첫 번째 추억을 올려보세요!",
-    },
-  };
-
   const renderEmptyState = () => {
     return (
-      <div className={styles.emptyList}>
+      <div
+        style={variant === "memory" && { marginTop: "120px" }}
+        className={styles.emptyList}
+      >
         <div className={styles.emptyImg}>
           <img src={empty} alt="데이터없음" />
         </div>
