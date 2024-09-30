@@ -1,8 +1,10 @@
 const BASE_URL = "https://613508a7-d02f-4d83-9103-b857cae37561.mock.pstmn.io";
+//const BASE_URL = "https://backend-vai1.onrender.com";
+const PAGE_SIZE = 8;
 
 export async function getGroups({
   page = 1,
-  pageSize = 2,
+  pageSize = PAGE_SIZE,
   sortBy = "mostLiked",
   isPublic = true,
   keyword = "",
@@ -40,5 +42,6 @@ export async function uploadImage(file) {
     throw new Error("이미지 업로드에 실패했습니다");
   }
   const result = await response.json();
+  console.log(result.imageUrl);
   return result.imageUrl;
 }

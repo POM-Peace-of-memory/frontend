@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import empty from "@assets/empty.svg";
-import Button from "@components/all/Button";
-import GroupCard from "@/components/group/GroupCard";
 import styles from "./CardList.module.css";
+import Button from "@components/all/Button";
+import GroupCard from "@components/group/main/GroupCard";
 
 const emptyStateText = {
   group: {
@@ -19,14 +19,14 @@ const CardList = ({ variant, cards }) => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    if (variant === "group") navigate("/register");
+    if (variant === "group") navigate("register");
     else navigate("/feed");
   };
 
   const renderEmptyState = () => {
     return (
       <div
-        style={variant === "memory" && { marginTop: "120px" }}
+        style={variant === "memory" ? { marginTop: "120px" } : {}}
         className={styles.emptyList}
       >
         <div className={styles.emptyImg}>

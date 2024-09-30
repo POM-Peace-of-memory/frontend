@@ -4,7 +4,8 @@ import PostPage from "@pages/Post";
 import PrivatePostPage from "@pages/PrivatePost";
 import PostDetailPage from "@pages/PostDetail";
 import GroupRegisterPage from "@pages/GroupRegister";
-import GroupPage from "./pages/Group";
+import GroupPage from "@pages/Group";
+import GroupListPage from "@pages/GroupList";
 import "./App.css";
 
 function App() {
@@ -12,11 +13,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="groups">
+          <Route index element={<GroupListPage />} />
+          <Route path="detail" element={<GroupPage />} />
+          <Route path="register" element={<GroupRegisterPage />} />
+        </Route>
         <Route path="/feed" element={<PostPage />} />
         <Route path="/private" element={<PrivatePostPage />} />
         <Route path="/detail" element={<PostDetailPage />} />
-        <Route path="/register" element={<GroupRegisterPage />} />
-        <Route path="/group" element={<GroupPage />} />
       </Routes>
     </BrowserRouter>
   );

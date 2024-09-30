@@ -3,7 +3,7 @@ import { createGroups, uploadImage } from "@/utils/api";
 import styles from "./GroupSetup.module.css";
 import toggleStyles from "@components/feed/Post.module.css";
 import Button from "@components/all/Button";
-import OkModal from "./OkModal";
+import OkModal from "@components/group/shared/OkModal";
 
 const INITIAL_VALUES = {
   name: "",
