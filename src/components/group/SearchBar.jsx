@@ -42,6 +42,7 @@ const SearchInput = ({ search, updateSearch }) => {
         value={search}
         onChange={onChangeSearch}
         placeholder="그룹명을 검색해 주세요"
+        className="typo-14-regular"
       />
     </div>
   );

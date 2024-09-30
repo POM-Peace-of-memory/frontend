@@ -3,7 +3,7 @@ import Button from "@components/all/Button";
 import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
 
-export default function Header({ button = false }) {
+export default function Header({ button = false, buttonHandler = () => {} }) {
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
@@ -14,7 +14,11 @@ export default function Header({ button = false }) {
           </Link>
         </div>
         <div className={styles.headerButton}>
-          {button && <Button size="small">그룹 만들기</Button>}
+          {button && (
+            <Button onClick={buttonHandler} size="small">
+              그룹 만들기
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -1,0 +1,104 @@
+.groupSetup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 60px;
+  margin: 40px 0px;
+  letter-spacing: -0.72px;
+}
+
+.groupForm {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 400px;
+  gap: 40px;
+}
+
+.groupForm > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.groupForm label {
+  font-size: var(--font-size-16);
+  font-weight: 500;
+}
+
+.formInput {
+  height: 45px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  padding-left: 20px;
+  background: var(--gray-50);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
+
+.formInput::placeholder {
+  color: var(--gray-400);
+}
+
+.formInput:focus {
+  outline: none;
+  border: 1px solid var(--black);
+}
+
+.groupForm textarea {
+  height: 120px;
+  padding-top: 14px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.formFileInput {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fileInputName {
+  width: 290px;
+  height: 45px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  padding-top: 14px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  color: var(--gray-400);
+}
+
+.selected {
+  color: var(--black);
+}
+
+.formFileInput button {
+  position: relative;
+  width: 100px;
+  height: 45px;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  background: var(--gray-50);
+}
+
+.formFileInput input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.formToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80px;
+  margin-top: 10px;
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
