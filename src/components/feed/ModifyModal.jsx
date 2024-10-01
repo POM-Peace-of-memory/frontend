@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"; 
-import styles from "./Modify.module.css";
+import { useNavigate, useParams } from "react-router-dom";
+import styles from "./ModifyModal.module.css";
 import ModifyButton from "../all/Button";
 
-export default function Modify() {
-  const { postId } = useParams(); 
-  const navigate = useNavigate(); 
+export default function ModifyModal({ closeModal }) {
+  const { postId } = useParams();
+  const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
@@ -19,7 +19,6 @@ export default function Modify() {
   const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
 
-  //기존 게시물 데이터를 불러옴
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -85,7 +84,7 @@ export default function Modify() {
 
         if (imageUploadResponse.ok) {
           const imageData = await imageUploadResponse.json();
-          imageURL = imageData.url; 
+          imageURL = imageData.url;
         } else {
           setErrorMessage("이미지 업로드에 실패했습니다.");
           return;
@@ -120,7 +119,7 @@ export default function Modify() {
 
       if (response.ok) {
         console.log("게시물 수정 성공");
-        navigate("/feed"); 
+        navigate("/feed");
       } else {
         const errorData = await response.json();
         console.error("게시물 수정 실패:", errorData);
@@ -134,7 +133,8 @@ export default function Modify() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    updatePost(); 
+    await updatePost();
+    closeModal(); 
   };
 
   return (

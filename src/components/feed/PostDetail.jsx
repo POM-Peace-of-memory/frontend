@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "./PostDetail.module.css";
+import ModifyModal from "./ModifyModal";
+import DeleteModal from "./DeleteModal";
 
 const PostDetail = () => {
   const [comments, setComments] = useState([
@@ -24,6 +26,8 @@ const PostDetail = () => {
   ]);
 
   const [newComment, setNewComment] = useState("");
+  const [showModifyModal, setShowModifyModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleCommentChange = (event) => {
     setNewComment(event.target.value);
@@ -49,8 +53,18 @@ const PostDetail = () => {
         <span>달봉이아들</span>
         <span className={styles.line}>|</span>
         <span className={styles.postPrivacy}>공개</span>
-        <span className={styles.edit}>추억 수정하기</span>
-        <span className={styles.delete}>추억 삭제하기</span>
+        <button
+          className={styles.edit}
+          onClick={() => setShowModifyModal(true)}
+        >
+          추억 수정하기
+        </button>
+        <button
+          className={styles.delete}
+          onClick={() => setShowDeleteModal(true)}
+        >
+          추억 삭제하기
+        </button>
       </div>
       <div className={styles.titleSection}>
         <h1>인천 앞바다에서 무려 60cm 월척을 낚다!</h1>
@@ -127,6 +141,14 @@ const PostDetail = () => {
         <button>5</button>
         <button>&raquo;</button>
       </div>
+
+      {/* 모달 */}
+      {showModifyModal && (
+        <ModifyModal closeModal={() => setShowModifyModal(false)} />
+      )}
+      {showDeleteModal && (
+        <DeleteModal closeModal={() => setShowDeleteModal(false)} />
+      )}
     </div>
   );
 };
