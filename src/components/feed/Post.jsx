@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; 
 import styles from "./Post.module.css";
 import UploadButton from "../all/Button";
 import UploadPermissionModal from "./UploadPermissionModal";
 
 export default function Post() {
-  const { groupId } = useParams();
+  const { groupId } = useParams(); 
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -16,8 +16,9 @@ export default function Post() {
   const [postPassword, setPostPassword] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
   const fileInputRef = useRef(null);
+  const [postData, setPostData] = useState(null); 
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -34,7 +35,7 @@ export default function Post() {
         setTags([...tags, formattedTag]);
       }
       event.target.value = "";
-      event.preventDefault();
+      event.preventDefault(); 
     }
   };
 
@@ -50,7 +51,8 @@ export default function Post() {
     setIsPublic(!isPublic);
   };
 
-  const createPost = async () => {
+  const preparePostData = async () => {
+    //필수 입력 필드 검증
     if (
       !nickname.trim() ||
       !title.trim() ||
@@ -59,7 +61,7 @@ export default function Post() {
       tags.length === 0
     ) {
       setErrorMessage("필수 항목을 모두 입력해 주세요.");
-      return;
+      return false;
     }
 
     //이미지 업로드 (일단 임시 이미지 업로드 URL 사용)
@@ -79,26 +81,36 @@ export default function Post() {
           imageURL = imageData.url; //업로드된 이미지 URL을 받음
         } else {
           setErrorMessage("이미지 업로드에 실패했습니다.");
-          return;
+          return false;
         }
       } catch (error) {
         console.error("이미지 업로드 실패:", error);
         setErrorMessage("이미지 업로드 중 오류가 발생했습니다.");
-        return;
+        return false;
       }
     }
 
-    const postData = {
+    const preparedData = {
       nickname,
       title,
       content,
       postPassword,
       imageURL,
-      tags,
+      tags, 
       location,
       moment,
       isPublic,
     };
+
+    setPostData(preparedData); 
+    return true;
+  };
+
+  const createPost = async () => {
+    if (!postData) {
+      setErrorMessage("게시물 데이터를 준비하지 못했습니다.");
+      return;
+    }
 
     try {
       const response = await fetch(`/api/groups/${groupId}/posts`, {
@@ -112,7 +124,7 @@ export default function Post() {
       if (response.ok) {
         const data = await response.json();
         console.log("게시물 등록 성공:", data);
-        setIsModalOpen(true);
+        setIsModalOpen(false);
         setNickname("");
         setTitle("");
         setContent("");
@@ -134,8 +146,15 @@ export default function Post() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const isPrepared = await preparePostData();
+    if (isPrepared) {
+      setIsModalOpen(true); 
+    }
+  };
+
+  const handleModalSuccess = () => {
     createPost();
   };
 
@@ -147,7 +166,6 @@ export default function Post() {
     <div className={styles.postContainer}>
       <div className={styles.modalWrapper}>
         <h2 className={styles.heading}>추억 올리기</h2>
-        {/* 에러 메시지 표시 */}
         {errorMessage && <p className={styles.error}>{errorMessage}</p>}{" "}
         <form className={styles.postModal} onSubmit={handleSubmit}>
           <section className={styles.leftSide}>
@@ -206,7 +224,7 @@ export default function Post() {
                   className={styles.removeImageButton}
                   onClick={() => setSelectedFile(null)}
                 >
-                  선택 취소 Ｘ
+                  이미지 제거
                 </button>
               </div>
             )}
@@ -242,6 +260,7 @@ export default function Post() {
                 </span>
               ))}
             </div>
+
             <label className={styles.label}>장소</label>
             <input
               className={styles.input}
@@ -249,6 +268,7 @@ export default function Post() {
               onChange={(e) => setLocation(e.target.value)}
               placeholder="장소를 입력해 주세요"
             />
+
             <label className={styles.label}>추억의 순간</label>
             <input
               className={styles.dateInput}
@@ -256,6 +276,16 @@ export default function Post() {
               value={moment}
               onChange={(e) => setMoment(e.target.value)}
             />
+
+            <label className={styles.label}>비밀번호 생성</label>
+            <input
+              className={styles.input}
+              value={postPassword}
+              onChange={(e) => setPostPassword(e.target.value)}
+              placeholder="추억 비밀번호를 생성해 주세요"
+              required
+            />
+
             <label className={styles.label}>추억 공개 선택</label>
             <div className={styles.toggleWrapper}>
               <span className={styles.toggleLabel}>공개</span>
@@ -268,20 +298,18 @@ export default function Post() {
                 <span className={styles.slider}></span>
               </label>
             </div>
-            <label className={styles.label}>비밀번호 생성</label>
-            <input
-              className={styles.input}
-              value={postPassword}
-              onChange={(e) => setPostPassword(e.target.value)}
-              placeholder="추억 비밀번호를 생성해 주세요"
-              required
-            />
           </section>
         </form>
         <UploadButton onClick={handleSubmit}>올리기</UploadButton>
       </div>
 
-      {isModalOpen && <UploadPermissionModal closeModal={closeModal} />}
+      {isModalOpen && (
+        <UploadPermissionModal
+          closeModal={closeModal}
+          groupId={groupId}
+          onSuccess={handleModalSuccess}
+        />
+      )}
     </div>
   );
 }
