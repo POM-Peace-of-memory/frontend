@@ -8,8 +8,7 @@ import flower from "@assets/flower.svg";
 const INITIAL_VALUE = {
   id: 123,
   name: "가족달봉이네 가족달봉이네 가족달봉이네 가족",
-  imageUrl:
-    "https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004",
+  imageUrl: "/src/assets/Image 4.svg",
   isPublic: true,
   likeCount: 1500,
   badges: ["badge1", "badge2"],

@@ -3,14 +3,14 @@
   text-decoration: none;
 }
 
-.groupCard {
+.memoryCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px;
   gap: 20px;
   width: 375px;
-  height: 561px;
+  height: 545px;
   box-sizing: border-box;
   flex-shrink: 0;
   border-radius: 12px;
@@ -18,7 +18,7 @@
   background: var(--gray-50);
 }
 
-.groupImg {
+.memoryImg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,12 +27,6 @@
   flex-shrink: 0;
   border-radius: 6px;
   background: #efede4;
-}
-
-.groupImg > img {
-  width: 122px;
-  height: 114.375px;
-  flex-shrink: 0;
 }
 
 .statesContainer {
@@ -60,34 +54,51 @@
   letter-spacing: -0.48px;
 }
 
+.memoryTag {
+  display: flex;
+  color: var(--gray-400);
+  flex-wrap: wrap;
+}
+
+.memoryTag span {
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
 .counterContainer {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  gap: 40px;
+  gap: 20px;
   letter-spacing: -0.36px;
 }
 
 .counterContainer > div {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 5px;
-}
-
-.counterContainer > div > :first-child {
-  color: var(--gray-400);
-}
-
-.likeCount > div {
-  display: flex;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
   gap: 5px;
+  color: var(--gray-500);
 }
 
 .likeCount img {
   width: 18px;
   height: 17.307px;
+}
+
+.commentCount img {
+  width: 24px;
+  height: 24px;
+}
+
+.cardBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.memoryLog {
+  display: flex;
+  gap: 5px;
 }

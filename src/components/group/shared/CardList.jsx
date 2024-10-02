@@ -3,6 +3,7 @@ import empty from "@assets/empty.svg";
 import styles from "./CardList.module.css";
 import Button from "@components/all/Button";
 import GroupCard from "@components/group/main/GroupCard";
+import MemoryCard from "../detail/MemoryCard";
 
 const emptyStateText = {
   group: {
@@ -50,9 +51,13 @@ const CardList = ({ variant, cards }) => {
   const renderCards = () => (
     <div className={styles.cardList}>
       <div className={styles.cardGrid}>
-        {cards.map((card) => (
-          <GroupCard key={card.id} card={card} />
-        ))}
+        {cards.map((card) =>
+          variant === "group" ? (
+            <GroupCard key={card.id} card={card} />
+          ) : (
+            <MemoryCard key={card.id} card={card} />
+          )
+        )}
       </div>
     </div>
   );
