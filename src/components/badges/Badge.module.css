@@ -1,0 +1,27 @@
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 15px;
+  letter-spacing: -0.48px;
+  max-height: 92px;
+  width: calc(100% - 4.8% - 187.881px);
+}
+
+.badgeList {
+  display: flex;
+  gap: 10px;
+  height: 52px;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.badge {
+  white-space: nowrap;
+  display: flex;
+  padding: 16px 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  background: var(--gray-100);
+}
