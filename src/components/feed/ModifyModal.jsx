@@ -2,9 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ModifyModal.module.css";
 import ModifyButton from "../all/Button";
+import { uploadImage } from "@/utils/api";
 
 export default function ModifyModal({ closeModal }) {
-  const { postId } = useParams();
+  // const { postId } = useParams();
+  // 요청 id를 1로 고정
+  const postId = 1;
+  // 목서버 주소
+  const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
@@ -22,7 +27,7 @@ export default function ModifyModal({ closeModal }) {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await fetch(`/api/posts/${postId}`);
+        const response = await fetch(`${BASE_URL}/api/posts/${postId}`);
         const data = await response.json();
         setNickname(data.nickname);
         setTitle(data.title);
@@ -72,10 +77,13 @@ export default function ModifyModal({ closeModal }) {
 
   const updatePost = async () => {
     let imageURL = "";
+
     if (selectedFile) {
+      // api.js 에 정의된 uploadImage 사용
+      imageURL = await uploadImage(selectedFile);
+      /*
       const formData = new FormData();
       formData.append("file", selectedFile);
-
       try {
         const imageUploadResponse = await fetch("/api/uploadImage", {
           method: "POST",
@@ -94,6 +102,7 @@ export default function ModifyModal({ closeModal }) {
         setErrorMessage("이미지 업로드 중 오류가 발생했습니다.");
         return;
       }
+      */
     }
 
     const updateData = {
@@ -109,14 +118,13 @@ export default function ModifyModal({ closeModal }) {
     };
 
     try {
-      const response = await fetch(`/api/posts/${postId}`, {
-        method: "PATCH",
+      const response = await fetch(`${BASE_URL}/api/posts/${postId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updateData),
       });
-
       if (response.ok) {
         console.log("게시물 수정 성공");
         navigate("/feed");
@@ -134,7 +142,7 @@ export default function ModifyModal({ closeModal }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await updatePost();
-    closeModal(); 
+    closeModal();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Component, useEffect } from "react";
+import { useEffect } from "react";
 import { getPosts } from "@/utils/api";
 import { useLoadData } from "@/hooks/useLoadData";
 import Header from "@components/all/Header";
@@ -11,8 +11,6 @@ import PageLayout from "../components/group/shared/PageLayout";
 
 export default function Group() {
   const { groupId } = useParams();
-
-  console.log(groupId);
 
   const { data, page, disabled, filter, setFilter, handleLoad } =
     useLoadData(getPosts);
