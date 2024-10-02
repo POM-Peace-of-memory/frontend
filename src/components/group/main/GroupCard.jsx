@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { calculateDDay, formatNumber } from "@/utils/utils";
 import styles from "./GroupCard.module.css";
 import flower from "@/assets/flower.svg";
@@ -83,5 +84,9 @@ export default function GroupCard({ card }) {
     );
   };
 
-  return <>{card.isPublic ? renderPublicCard() : renderPrivateCard()}</>;
+  return (
+    <Link to={`/groups/${card.id}`} className={styles.groupLink}>
+      {card.isPublic ? renderPublicCard() : renderPrivateCard()}
+    </Link>
+  );
 }

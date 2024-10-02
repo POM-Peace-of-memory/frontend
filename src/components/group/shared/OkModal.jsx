@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./OkModal.module.css";
-import Button from "../all/Button";
+import Button from "@components/all/Button";
 
 export default function OkModal({ handleModal, varient }) {
   const navigate = useNavigate();

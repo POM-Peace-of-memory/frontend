@@ -1,0 +1,124 @@
+.groupDetail {
+  display: flex;
+  width: 100%;
+  gap: 4%;
+  margin-top: 60px;
+  box-sizing: border-box;
+}
+
+.groupImg {
+  height: auto;
+  width: 262px;
+  display: flex;
+  align-items: center;
+}
+
+.groupImg img {
+  height: 273px;
+  width: 262px;
+  border-radius: 6px;
+}
+
+.groupInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.infoContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  word-break: keep-all;
+}
+
+.groupDatePublic {
+  display: flex;
+  gap: 15px;
+}
+
+.groupDatePublic > span:nth-child(2) {
+  color: var(--gray-400);
+}
+
+.groupDatePublic > span:nth-child(3) {
+  color: var(--gray-500);
+}
+
+.groupUpdateDelete {
+  display: flex;
+  gap: 40px;
+}
+
+.groupUpdateDelete > button:nth-child(2) {
+  color: var(--gray-500);
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 3%;
+  overflow: hidden;
+}
+
+.groupPostLike {
+  display: flex;
+  gap: 20px;
+  white-space: nowrap;
+}
+
+.groupPostLike > span:nth-child(2) {
+  color: var(--gray-400);
+  font-weight: 400;
+}
+
+.bagesLikeButton {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.likeButton {
+  display: flex;
+  width: 187.881px;
+  height: 52px;
+  padding: 15px 0px;
+  margin-left: 4.8%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  box-sizing: border-box;
+}
+
+.likeButton img {
+  width: 22.881px;
+  height: 22px;
+}
+
+.line {
+  width: 100%;
+  height: 0px;
+  border: 0.5px solid var(--gray-200);
+  opacity: 0.5;
+  margin: 120px 0px;
+}
+
+.memoryHeader {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.memoryHeader > div {
+  width: 200px;
+}

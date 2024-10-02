@@ -1,8 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./SearchBar.module.css";
 import searchIcon from "@/assets/search.svg";
 
-const ToggleButton = ({ isPublic, updateisPublic }) => {
+const searchBarText = {
+  group: {
+    searchText: "그룹명을 검색해 주세요",
+    order: [
+      ["mostLiked", "공감순"],
+      ["latest", "최신순"],
+      ["mostPosted", "추억순"],
+      ["mostBadge", "뱃지순"],
+    ],
+  },
+  memory: {
+    searchText: "태그 혹은 제목을 입력해 주세요",
+    order: [
+      ["mostLiked", "공감순"],
+      ["latest", "최신순"],
+      ["mostCommented", "댓글순"],
+    ],
+  },
+};
+
+const ToggleButton = ({ isPublic, updateIsPublic }) => {
   const setButtonClass = (buttonState) => {
     return `typo-14-bold ${styles.toggleButton} ${
       isPublic === buttonState ? styles.toggleSelected : ""
@@ -13,13 +33,13 @@ const ToggleButton = ({ isPublic, updateisPublic }) => {
     <div className={styles.toggleContainer}>
       <button
         className={setButtonClass(true)}
-        onClick={() => updateisPublic(true)}
+        onClick={() => updateIsPublic(true)}
       >
         공개
       </button>
       <button
         className={setButtonClass(false)}
-        onClick={() => updateisPublic(false)}
+        onClick={() => updateIsPublic(false)}
       >
         비공개
       </button>
@@ -27,7 +47,7 @@ const ToggleButton = ({ isPublic, updateisPublic }) => {
   );
 };
 
-const SearchInput = ({ search, updateSearch }) => {
+const SearchInput = ({ variant, search, updateSearch }) => {
   const onChangeSearch = (e) => {
     updateSearch(e.target.value);
   };
@@ -41,14 +61,14 @@ const SearchInput = ({ search, updateSearch }) => {
         type="text"
         value={search}
         onChange={onChangeSearch}
-        placeholder="그룹명을 검색해 주세요"
+        placeholder={searchBarText[variant].searchText}
         className="typo-14-regular"
       />
     </div>
   );
 };
 
-const FilterDropdown = ({ updateOrder }) => {
+const FilterDropdown = ({ variant, updateOrder }) => {
   const onChangeSelect = (e) => {
     updateOrder(e.target.value);
   };
@@ -57,20 +77,21 @@ const FilterDropdown = ({ updateOrder }) => {
       onChange={onChangeSelect}
       className={`typo-14-regular ${styles.filterDropdown}`}
     >
-      <option value="mostLiked">공감순</option>
-      <option value="latest">최신순</option>
-      <option value="mostPosted">추억순</option>
-      <option value="mostBadge">뱃지순</option>
+      {searchBarText[variant].order.map((it, idx) => (
+        <option key={idx} value={it[0]}>
+          {it[1]}
+        </option>
+      ))}
     </select>
   );
 };
 
-const SearchBar = ({ setFilter }) => {
+const SearchBar = ({ setFilter, variant }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [search, setSearch] = useState("");
-  const [order, setOrder] = useState("likeCount");
+  const [order, setOrder] = useState("mostLiked");
 
-  const updateisPublic = (state) => {
+  const updateIsPublic = (state) => {
     setIsPublic(state);
     setFilter((prev) => ({ ...prev, isPublic: state }));
   };
@@ -86,9 +107,13 @@ const SearchBar = ({ setFilter }) => {
   };
   return (
     <div className={styles.searchBar}>
-      <ToggleButton isPublic={isPublic} updateisPublic={updateisPublic} />
-      <SearchInput search={search} updateSearch={updateSearch} />
-      <FilterDropdown updateOrder={updateOrder} />
+      <ToggleButton isPublic={isPublic} updateIsPublic={updateIsPublic} />
+      <SearchInput
+        variant={variant}
+        search={search}
+        updateSearch={updateSearch}
+      />
+      <FilterDropdown variant={variant} updateOrder={updateOrder} />
     </div>
   );
 };
