@@ -85,7 +85,7 @@ export default function GroupCard({ card }) {
   };
 
   return (
-    <Link to="detail" className={styles.groupLink}>
+    <Link to={`/groups/${card.id}`} className={styles.groupLink}>
       {card.isPublic ? renderPublicCard() : renderPrivateCard()}
     </Link>
   );

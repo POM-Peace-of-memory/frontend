@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import { calculateDDay, formatNumber } from "@/utils/utils";
+import { formatNumber } from "@/utils/utils";
 import styles from "./MemoryCard.module.css";
 import flower from "@/assets/flower.svg";
 import comment from "@/assets/comment.svg";
 
 export default function MemoryCard({ card }) {
-  console.log(card.tags);
   const renderPrivateCard = () => {
     return (
-      <div className={styles.memoryCard} style={{ height: "156px" }}>
+      <div className={styles.memoryCard} style={{ height: "142px" }}>
         <div className={styles.statesContainer}>
           <span className="typo-14-regular">{card.nickname}</span>
           <span className="typo-14-regular">|</span>
@@ -20,7 +19,9 @@ export default function MemoryCard({ card }) {
         <div className={styles.counterContainer}>
           <div className={styles.likeCount}>
             <img src={flower} alt="공감" />
-            <span className="typo-14-regular">{card.likeCount}</span>
+            <span className="typo-14-regular">
+              {formatNumber(card.likeCount)}
+            </span>
           </div>
           <div className={styles.commentCount}>
             <img src={comment} alt="댓글" />
@@ -61,7 +62,9 @@ export default function MemoryCard({ card }) {
           <div className={styles.counterContainer}>
             <div className={styles.likeCount}>
               <img src={flower} alt="공감" />
-              <span className="typo-14-regular">{card.likeCount}</span>
+              <span className="typo-14-regular">
+                {formatNumber(card.likeCount)}
+              </span>
             </div>
             <div className={styles.commentCount}>
               <img src={comment} alt="댓글" />
@@ -74,7 +77,7 @@ export default function MemoryCard({ card }) {
   };
 
   return (
-    <Link to="detail" className={styles.groupLink}>
+    <Link to="/detail" className={styles.groupLink}>
       {card.isPublic ? renderPublicCard() : renderPrivateCard()}
     </Link>
   );

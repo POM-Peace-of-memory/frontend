@@ -45,3 +45,29 @@ export async function uploadImage(file) {
   console.log(result.imageUrl);
   return result.imageUrl;
 }
+
+export async function getGroupDetails(groupId) {
+  const response = await fetch(`${BASE_URL}/groups/${groupId}`);
+  if (!response.ok) {
+    throw new Error("그룹 상세 데이터를 불러오는데 실패했습니다");
+  }
+  const body = await response.json();
+  return body;
+}
+
+export async function getPosts({
+  page = 1,
+  pageSize = PAGE_SIZE,
+  sortBy = "mostLiked",
+  isPublic = true,
+  keyword = "",
+  groupId = 0,
+}) {
+  const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&isPublic=${isPublic}&keyword=${keyword}&groupId=${groupId}`;
+  const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
+  if (!response.ok) {
+    throw new Error("게시글 목록 데이터를 불러오는데 실패했습니다");
+  }
+  const body = await response.json();
+  return body;
+}

@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { calculateDDay, formatNumber } from "@/utils/utils";
+import { getGroupDetails } from "@/utils/api";
 import { useNavigate } from "react-router-dom";
 import styles from "./GroupDetail.module.css";
 import Badge from "@components/badges/Badge";
@@ -6,36 +8,44 @@ import Button from "@components/all/Button";
 import flower from "@assets/flower.svg";
 
 const INITIAL_VALUE = {
-  id: 123,
-  name: "가족달봉이네 가족달봉이네 가족달봉이네 가족",
-  imageUrl: "/src/assets/Image 4.svg",
+  id: 0,
+  name: "",
+  imageUrl: "",
   isPublic: true,
-  likeCount: 1500,
-  badges: ["badge1", "badge2"],
+  likeCount: 0,
+  badges: [],
   postCount: 0,
-  createdAt: "2024-02-22T07:47:49.803Z",
-  introduction:
-    "서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다. 서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다. 그냥 끝까지로 할게요 그리고 두 줄까지만!",
+  createdAt: "",
+  introduction: "",
 };
 
-export default function GroupDetail() {
+export default function GroupDetail({ groupId }) {
+  const [groupData, setGroupData] = useState(INITIAL_VALUE);
+  // const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate();
+
   const handleButton = () => {
     navigate("/feed");
   };
+
+  useEffect(async () => {
+    const result = await getGroupDetails(groupId);
+    setGroupData(result);
+    console.log(result);
+  }, [groupId]);
 
   return (
     <>
       <div className={styles.groupDetail}>
         <div className={styles.groupImg}>
-          <img src={INITIAL_VALUE.imageUrl} alt="그룹이미지" />
+          <img src={groupData.imageUrl} alt="그룹이미지" />
         </div>
         <div className={styles.groupInfo}>
           <div className={styles.infoContainer}>
             <div className={`typo-16-regular ${styles.groupDatePublic}`}>
-              <span>{calculateDDay(INITIAL_VALUE.createdAt)}</span>
+              <span>{calculateDDay(groupData.createdAt)}</span>
               <span>|</span>
-              <span>{INITIAL_VALUE.isPublic ? "공개" : "비공개"}</span>
+              <span>{groupData.isPublic ? "공개" : "비공개"}</span>
             </div>
             <div className={`typo-14-regular ${styles.groupUpdateDelete}`}>
               <button>그룹 정보 수정하기</button>
@@ -44,16 +54,16 @@ export default function GroupDetail() {
           </div>
           <div className={styles.infoContainer}>
             <div className={`typo-30-bold ${styles.groupTitle}`}>
-              {INITIAL_VALUE.name}
+              {groupData.name}
             </div>
             <div className={`typo-18-bold ${styles.groupPostLike}`}>
-              <span>추억 {INITIAL_VALUE.postCount}</span>
+              <span>추억 {groupData.postCount}</span>
               <span>|</span>
-              <span>그룹 공감 {formatNumber(INITIAL_VALUE.likeCount)}</span>
+              <span>그룹 공감 {formatNumber(groupData.likeCount)}</span>
             </div>
           </div>
           <div className={`typo-18-regular ${styles.infoContainer}`}>
-            {INITIAL_VALUE.introduction}
+            {groupData.introduction}
           </div>
           <div className={styles.bagesLikeButton}>
             <Badge />

@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="groups">
           <Route index element={<GroupListPage />} />
-          <Route path="detail" element={<GroupPage />} />
+          <Route path=":groupId" element={<GroupPage />} />
           <Route path="register" element={<GroupRegisterPage />} />
         </Route>
         <Route path="/feed" element={<PostPage />} />
