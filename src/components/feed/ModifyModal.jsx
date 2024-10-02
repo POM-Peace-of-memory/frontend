@@ -1,11 +1,12 @@
-import { useState, useRef } from "react";
-import { useParams } from "react-router-dom"; 
-import styles from "./Post.module.css";
-import UploadButton from "../all/Button";
-import UploadPermissionModal from "./UploadPermissionModal";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styles from "./ModifyModal.module.css";
+import ModifyButton from "../all/Button";
 
-export default function Post() {
-  const { groupId } = useParams(); 
+export default function ModifyModal({ closeModal }) {
+  const { postId } = useParams();
+  const navigate = useNavigate();
+
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -15,10 +16,28 @@ export default function Post() {
   const [moment, setMoment] = useState("");
   const [postPassword, setPostPassword] = useState("");
   const [isPublic, setIsPublic] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
-  const [postData, setPostData] = useState(null); 
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const response = await fetch(`/api/posts/${postId}`);
+        const data = await response.json();
+        setNickname(data.nickname);
+        setTitle(data.title);
+        setContent(data.content);
+        setTags(data.tags);
+        setLocation(data.location);
+        setMoment(data.moment);
+        setIsPublic(data.isPublic);
+      } catch (error) {
+        console.error("게시물 데이터를 불러오는 중 오류 발생:", error);
+        setErrorMessage("게시물 데이터를 불러오지 못했습니다.");
+      }
+    };
+    fetchPostData();
+  }, [postId]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +54,7 @@ export default function Post() {
         setTags([...tags, formattedTag]);
       }
       event.target.value = "";
-      event.preventDefault(); 
+      event.preventDefault();
     }
   };
 
@@ -51,20 +70,7 @@ export default function Post() {
     setIsPublic(!isPublic);
   };
 
-  const preparePostData = async () => {
-    //필수 입력 필드 검증
-    if (
-      !nickname.trim() ||
-      !title.trim() ||
-      !content.trim() ||
-      !postPassword.trim() ||
-      tags.length === 0
-    ) {
-      setErrorMessage("필수 항목을 모두 입력해 주세요.");
-      return false;
-    }
-
-    //이미지 업로드 (일단 임시 이미지 업로드 URL 사용)
+  const updatePost = async () => {
     let imageURL = "";
     if (selectedFile) {
       const formData = new FormData();
@@ -78,67 +84,46 @@ export default function Post() {
 
         if (imageUploadResponse.ok) {
           const imageData = await imageUploadResponse.json();
-          imageURL = imageData.url; //업로드된 이미지 URL을 받음
+          imageURL = imageData.url;
         } else {
           setErrorMessage("이미지 업로드에 실패했습니다.");
-          return false;
+          return;
         }
       } catch (error) {
         console.error("이미지 업로드 실패:", error);
         setErrorMessage("이미지 업로드 중 오류가 발생했습니다.");
-        return false;
+        return;
       }
     }
 
-    const preparedData = {
+    const updateData = {
       nickname,
       title,
       content,
       postPassword,
       imageURL,
-      tags, 
+      tags,
       location,
       moment,
       isPublic,
     };
 
-    setPostData(preparedData); 
-    return true;
-  };
-
-  const createPost = async () => {
-    if (!postData) {
-      setErrorMessage("게시물 데이터를 준비하지 못했습니다.");
-      return;
-    }
-
     try {
-      const response = await fetch(`/api/groups/${groupId}/posts`, {
-        method: "POST",
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(updateData),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("게시물 등록 성공:", data);
-        setIsModalOpen(false);
-        setNickname("");
-        setTitle("");
-        setContent("");
-        setSelectedFile(null);
-        setTags([]);
-        setLocation("");
-        setMoment("");
-        setPostPassword("");
-        setIsPublic(false);
-        setErrorMessage("");
+        console.log("게시물 수정 성공");
+        navigate("/feed");
       } else {
         const errorData = await response.json();
-        console.error("게시물 등록 실패:", errorData);
-        setErrorMessage(errorData.message || "게시물 등록에 실패했습니다.");
+        console.error("게시물 수정 실패:", errorData);
+        setErrorMessage(errorData.message || "게시물 수정에 실패했습니다.");
       }
     } catch (error) {
       console.error("API 요청 실패:", error);
@@ -148,26 +133,16 @@ export default function Post() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const isPrepared = await preparePostData();
-    if (isPrepared) {
-      setIsModalOpen(true); 
-    }
-  };
-
-  const handleModalSuccess = () => {
-    createPost();
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+    await updatePost();
+    closeModal(); 
   };
 
   return (
-    <div className={styles.postContainer}>
+    <div className={styles.modifyContainer}>
       <div className={styles.modalWrapper}>
-        <h2 className={styles.heading}>추억 올리기</h2>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}{" "}
-        <form className={styles.postModal} onSubmit={handleSubmit}>
+        <h2 className={styles.heading}>추억 수정하기</h2>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        <form className={styles.modifyForm} onSubmit={handleSubmit}>
           <section className={styles.leftSide}>
             <label className={styles.label}>닉네임</label>
             <input
@@ -243,7 +218,7 @@ export default function Post() {
             <label className={styles.label}>태그</label>
             <input
               className={styles.input}
-              placeholder="#태그 선택"
+              placeholder="#태그 입력"
               onKeyUp={handleTagInput}
             />
             <div className={styles.tagsWrapper}>
@@ -277,39 +252,30 @@ export default function Post() {
               onChange={(e) => setMoment(e.target.value)}
             />
 
-            <label className={styles.label}>비밀번호 생성</label>
+            <label className={styles.label}>비밀번호</label>
             <input
               className={styles.input}
               value={postPassword}
               onChange={(e) => setPostPassword(e.target.value)}
-              placeholder="추억 비밀번호를 생성해 주세요"
+              placeholder="비밀번호를 입력해 주세요"
               required
             />
 
-            <label className={styles.label}>추억 공개 선택</label>
-            <div className={styles.toggleWrapper}>
-              <span className={styles.toggleLabel}>공개</span>
-              <label className={styles.switch}>
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={togglePublic}
-                />
-                <span className={styles.slider}></span>
-              </label>
+            <div className={styles.publicToggle}>
+              <input
+                type="checkbox"
+                checked={isPublic}
+                onChange={togglePublic}
+              />
+              <span>{isPublic ? "공개" : "비공개"}</span>
             </div>
           </section>
-        </form>
-        <UploadButton onClick={handleSubmit}>올리기</UploadButton>
-      </div>
 
-      {isModalOpen && (
-        <UploadPermissionModal
-          closeModal={closeModal}
-          groupId={groupId}
-          onSuccess={handleModalSuccess}
-        />
-      )}
+          <div className={styles.buttonContainer}>
+            <ModifyButton type="submit" text="수정하기" />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

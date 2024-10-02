@@ -1,14 +1,29 @@
 import { useState } from "react";
 import styles from "./UploadPermissionModal.module.css";
 
-export default function DeleteModal({ closeModal }) {
+export default function DeleteModal({ closeModal, postId }) {
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    //비밀번호 검증 로직 추가 예정
-    console.log("입력된 비밀번호:", password);
-    closeModal();
+
+    const response = await fetch(`/api/posts/${postId}/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    if (response.ok) {
+      console.log("게시물 삭제 성공");
+      closeModal(); 
+    } else {
+      const errorData = await response.json();
+      console.error("게시물 삭제 실패:", errorData);
+      setErrorMessage(errorData.message || "게시물 삭제에 실패했습니다.");
+    }
   };
 
   return (
@@ -27,6 +42,7 @@ export default function DeleteModal({ closeModal }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
           <button type="submit" className={styles.submitButton}>
             삭제하기
           </button>
