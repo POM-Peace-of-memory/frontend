@@ -6,7 +6,6 @@ export const useLoadData = (fetchFunction) => {
   const [disabled, setDisabled] = useState(true);
   const [filter, setFilter] = useState({
     isPublic: true,
-    search: "",
     order: "mostLiked",
   });
 
@@ -17,6 +16,7 @@ export const useLoadData = (fetchFunction) => {
     } catch (error) {
       console.log(error);
     }
+    console.log(result);
     const { currentPage, totalPages, data } = result;
     if (currentPage === 1) {
       setData(data);
@@ -25,7 +25,7 @@ export const useLoadData = (fetchFunction) => {
     }
 
     setPage(currentPage + 1);
-    setDisabled(currentPage === totalPages);
+    setDisabled(currentPage === totalPages || !totalPages);
   };
 
   return { data, page, disabled, filter, setFilter, handleLoad };

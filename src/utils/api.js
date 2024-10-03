@@ -1,15 +1,14 @@
-const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
-// const BASE_URL = "https://backend-vai1.onrender.com/api";
+// const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
+const BASE_URL = "https://backend-vai1.onrender.com/api";
 const PAGE_SIZE = 8;
 
 export async function getGroups({
   page = 1,
-  pageSize = 2,
+  pageSize = PAGE_SIZE,
   sortBy = "mostLiked",
   isPublic = true,
-  keyword = "",
 }) {
-  const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&isPublic=${isPublic}&keyword=${keyword}`;
+  const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&isPublic=${isPublic}`;
   const response = await fetch(`${BASE_URL}/groups?${query}`);
   if (!response.ok) {
     throw new Error("데이터를 불러오는데 실패했습니다");
@@ -19,9 +18,15 @@ export async function getGroups({
 }
 
 export async function createGroups(groupData) {
+  let data = JSON.stringify(groupData);
+  console.log(`Request body: ${data}`);
   const response = await fetch(`${BASE_URL}/groups`, {
     method: "POST",
-    body: groupData,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: data,
   });
   if (!response.ok) {
     throw new Error("데이터를 생성하는데 실패했습니다");

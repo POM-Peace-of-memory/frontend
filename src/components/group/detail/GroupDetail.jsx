@@ -15,33 +15,39 @@ const INITIAL_VALUE = {
   likeCount: 0,
   badges: [],
   postCount: 0,
-  createdAt: "",
+  createdAt: new Date(),
   introduction: "",
 };
 
 export default function GroupDetail({ groupId }) {
   const [groupData, setGroupData] = useState(INITIAL_VALUE);
-  // const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate();
 
   const handleButton = () => {
     navigate("/feed");
   };
 
-  useEffect(async () => {
+  const handleLoad = async () => {
     const result = await getGroupDetails(groupId);
     setGroupData(result);
     console.log(result);
-    return () => {
-      groupId = "";
-    };
-  }, [groupId]);
+  };
+
+  useEffect(() => {
+    handleLoad();
+  }, []);
 
   return (
     <>
       <div className={styles.groupDetail}>
         <div className={styles.groupImg}>
-          <img src={groupData.imageUrl} alt="그룹이미지" />
+          {groupData.imageUrl === "" ? (
+            <div className={styles.noneImg}>
+              <img src={flower} alt="그룹이미지" />
+            </div>
+          ) : (
+            <img src={groupData.imageUrl} alt="그룹이미지" />
+          )}
         </div>
         <div className={styles.groupInfo}>
           <div className={styles.infoContainer}>

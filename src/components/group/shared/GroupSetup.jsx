@@ -35,14 +35,14 @@ export default function GroupSetup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const imgUrl = await uploadImage(values.image);
-    const imgUrl = values.image;
+    let imageUrl = "";
+    if (values.image) imageUrl = await uploadImage(values.image);
     let result;
     try {
       result = await createGroups({
         name: values.name,
         password: values.password,
-        imgUrl,
+        imageUrl,
         isPublic: values.isPublic,
         introduction: values.introduction,
       });
@@ -51,7 +51,7 @@ export default function GroupSetup() {
       console.log(error);
       setSubmitStatus("createFail");
     }
-    console.log(values);
+    console.log(result);
     setOpen(true);
   };
 

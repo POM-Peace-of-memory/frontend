@@ -13,10 +13,25 @@
   align-items: center;
 }
 
-.groupImg img {
+.groupImg > img {
   height: 273px;
   width: 262px;
   border-radius: 6px;
+}
+
+.noneImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 273px;
+  width: 262px;
+  border-radius: 6px;
+  background: #efede4;
+}
+
+.noneImg > img {
+  width: 122px;
+  height: 122px;
 }
 
 .groupInfo {
