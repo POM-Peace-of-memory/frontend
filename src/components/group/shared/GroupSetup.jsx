@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { createGroups, uploadImage } from "@/utils/api";
+import { createGroups, uploadImage, updateGroups } from "@/utils/api";
 import styles from "./GroupSetup.module.css";
 import toggleStyles from "@components/feed/Post.module.css";
 import Button from "@components/all/Button";
@@ -8,23 +8,34 @@ import OkModal from "@components/group/shared/OkModal";
 const INITIAL_VALUES = {
   name: "",
   password: "",
-  image: null,
+  imageUrl: "",
   isPublic: true,
   introduction: "",
 };
 
-export default function GroupSetup() {
-  const [values, setValues] = useState(INITIAL_VALUES);
+export default function GroupSetup({
+  variant,
+  initialValue = INITIAL_VALUES,
+  groupId = "",
+}) {
+  const [values, setValues] = useState({
+    name: initialValue.name,
+    password: "",
+    imageUrl: initialValue.imageUrl,
+    isPublic: initialValue.isPublic,
+    introduction: initialValue.introduction,
+  });
+  const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
   const fileInputRef = useRef();
 
+  console.log(values, groupId);
   const handleChange = (e) => {
     const { id } = e.target;
     let value;
 
     if (id === "isPublic") value = e.target.checked;
-    else if (id === "image") value = e.target.files[0];
     else value = e.target.value;
 
     setValues((prev) => ({
@@ -33,23 +44,41 @@ export default function GroupSetup() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let imageUrl = "";
-    if (values.image) imageUrl = await uploadImage(values.image);
+
+    let updatedValues = { ...values };
+
+    if (image) {
+      try {
+        const imageUrl = await uploadImage(image);
+        updatedValues.imageUrl = imageUrl;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     let result;
-    try {
-      result = await createGroups({
-        name: values.name,
-        password: values.password,
-        imageUrl,
-        isPublic: values.isPublic,
-        introduction: values.introduction,
-      });
-      setSubmitStatus("createSuccess");
-    } catch (error) {
-      console.log(error);
-      setSubmitStatus("createFail");
+    if (variant === "create") {
+      try {
+        result = await createGroups(updatedValues);
+        setSubmitStatus("createSuccess");
+      } catch (error) {
+        console.log(error);
+        setSubmitStatus("createFail");
+      }
+    } else if (variant === "edit") {
+      try {
+        result = await updateGroups(updatedValues, groupId);
+        setSubmitStatus("updateSuccess");
+      } catch (error) {
+        console.log(error);
+        setSubmitStatus("updateFail");
+      }
     }
     console.log(result);
     setOpen(true);
@@ -57,7 +86,9 @@ export default function GroupSetup() {
 
   return (
     <div className={styles.groupSetup}>
-      <span className="typo-24-bold">그룹 만들기</span>
+      <span className="typo-24-bold">
+        {variant === "create" ? "그룹 만들기" : "그룹 정보 수정"}
+      </span>
       <form
         onSubmit={handleSubmit}
         className={`typo-14-regular ${styles.groupForm}`}
@@ -77,11 +108,13 @@ export default function GroupSetup() {
           <label htmlFor="image">대표 이미지</label>
           <div className={styles.formFileInput}>
             <div
-              className={`${styles.fileInputName} ${
-                values.image && styles.selected
-              }`}
+              className={`${styles.fileInputName} ${image && styles.selected}`}
             >
-              {values.image ? values.image.name : `파일을 선택해 주세요`}
+              {image
+                ? image.name
+                : values.imageUrl
+                ? "기존 그룹 이미지"
+                : `파일을 선택해 주세요`}
             </div>
             <button>
               파일 선택
@@ -89,7 +122,7 @@ export default function GroupSetup() {
                 id="image"
                 type="file"
                 accept="image/*"
-                onChange={handleChange}
+                onChange={handleImageChange}
                 ref={fileInputRef}
               />
             </button>
@@ -121,19 +154,25 @@ export default function GroupSetup() {
           </div>
         </div>
         <div>
-          <label htmlFor="password">비밀번호 생성</label>
+          <label htmlFor="password">
+            {variant === "create" ? "비밀번호 생성" : "수정 권한 인증"}
+          </label>
           <input
             id="password"
             type="password"
             value={values.password}
-            placeholder="그룹 비밀번호를 생성해 주세요"
+            placeholder={
+              variant === "create"
+                ? "그룹 비밀번호를 생성해 주세요"
+                : "그룹 비밀번호를 입력해 주세요"
+            }
             onChange={handleChange}
             className={styles.formInput}
           ></input>
         </div>
         <Button style={{ marginTop: "20px" }}>만들기</Button>
       </form>
-      {open && <OkModal handleModal={setOpen} varient={submitStatus} />}
+      {open && <OkModal handleModal={setOpen} variant={submitStatus} />}
     </div>
   );
 }

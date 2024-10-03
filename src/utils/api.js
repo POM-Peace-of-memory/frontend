@@ -36,6 +36,51 @@ export async function createGroups(groupData) {
   return body;
 }
 
+export async function verifyPassword(password, groupId) {
+  let data = JSON.stringify({ password: password });
+  const response = await fetch(
+    `${BASE_URL}/groups/${groupId}/verify-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: data,
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("비밀번호 확인에 실패햇습니다.");
+  }
+  const body = await response.json();
+  console.log(body);
+  return body;
+}
+
+export async function updateGroups(groupData, groupId) {
+  try {
+    await verifyPassword(groupData.password, groupId);
+    let data = JSON.stringify(groupData);
+    console.log(`Request body: ${data}`);
+    const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: data,
+    });
+    if (!response.ok) {
+      throw new Error("데이터를 수정하는데 실패했습니다");
+    }
+    const body = await response.json();
+    console.log(body);
+    return body;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function uploadImage(file) {
   const formData = new FormData();
   formData.append("image", file);

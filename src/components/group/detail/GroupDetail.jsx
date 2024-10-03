@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "./GroupDetail.module.css";
 import Badge from "@components/badges/Badge";
 import Button from "@components/all/Button";
+import GroupSetup from "@components/group/shared/GroupSetup";
 import flower from "@assets/flower.svg";
+import XIcon from "@assets/xIcon.svg";
 
 const INITIAL_VALUE = {
   id: 0,
@@ -21,16 +23,20 @@ const INITIAL_VALUE = {
 
 export default function GroupDetail({ groupId }) {
   const [groupData, setGroupData] = useState(INITIAL_VALUE);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleButton = () => {
+  const handleUploadClick = () => {
     navigate("/feed");
+  };
+
+  const handleEditClick = () => {
+    setOpen(true);
   };
 
   const handleLoad = async () => {
     const result = await getGroupDetails(groupId);
     setGroupData(result);
-    console.log(result);
   };
 
   useEffect(() => {
@@ -57,7 +63,7 @@ export default function GroupDetail({ groupId }) {
               <span>{groupData.isPublic ? "공개" : "비공개"}</span>
             </div>
             <div className={`typo-14-regular ${styles.groupUpdateDelete}`}>
-              <button>그룹 정보 수정하기</button>
+              <button onClick={handleEditClick}>그룹 정보 수정하기</button>
               <button>그룹 삭제하기</button>
             </div>
           </div>
@@ -87,10 +93,29 @@ export default function GroupDetail({ groupId }) {
       <div className={styles.memoryHeader}>
         <div></div>
         <span className="typo-24-bold">추억 목록</span>
-        <Button size="small" onClick={handleButton}>
+        <Button size="small" onClick={handleUploadClick}>
           추억 올리기
         </Button>
       </div>
+      {open && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <button
+              className={styles.closeButton}
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <img src={XIcon} alt="닫기" />
+            </button>
+            <GroupSetup
+              variant="edit"
+              initialValue={groupData}
+              groupId={groupId}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
