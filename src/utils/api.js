@@ -106,6 +106,15 @@ export async function getGroupDetails(groupId) {
   return body;
 }
 
+export async function addLike(groupId) {
+  const response = await fetch(`${BASE_URL}/groups/${groupId}/like`, {
+    method: "POST",
+  });
+  if (!response.ok) {
+    throw new Error("그룹 공감에 실패했습니다");
+  }
+}
+
 export async function getPosts({
   page = 1,
   pageSize = PAGE_SIZE,

@@ -8,6 +8,7 @@ import Button from "@components/all/Button";
 import GroupSetup from "@components/group/shared/GroupSetup";
 import flower from "@assets/flower.svg";
 import XIcon from "@assets/xIcon.svg";
+import { addLike } from "../../../utils/api";
 
 const INITIAL_VALUE = {
   id: 0,
@@ -32,6 +33,16 @@ export default function GroupDetail({ groupId }) {
 
   const handleEditClick = () => {
     setOpen(true);
+  };
+
+  const handleLikeClick = async () => {
+    const prevCount = groupData.likeCount;
+    await addLike(groupId);
+    setGroupData((prev) => ({
+      ...prev,
+      likeCount: prevCount + 1,
+    }));
+    console.log(groupData);
   };
 
   const handleLoad = async () => {
@@ -82,7 +93,7 @@ export default function GroupDetail({ groupId }) {
           </div>
           <div className={styles.bagesLikeButton}>
             <Badge />
-            <button className={styles.likeButton}>
+            <button onClick={handleLikeClick} className={styles.likeButton}>
               <img src={flower} alt="공감" />
               <span className="typo-16-medium">공감 보내기</span>
             </button>

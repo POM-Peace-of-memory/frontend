@@ -16,7 +16,7 @@ export const useLoadData = (fetchFunction) => {
     } catch (error) {
       console.log(error);
     }
-    console.log(result);
+
     const { currentPage, totalPages, data } = result;
     if (currentPage === 1) {
       setData(data);

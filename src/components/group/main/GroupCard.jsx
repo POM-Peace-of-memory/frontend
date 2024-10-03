@@ -4,7 +4,6 @@ import styles from "./GroupCard.module.css";
 import flower from "@/assets/flower.svg";
 
 export default function GroupCard({ card }) {
-  console.log(card);
   const renderPrivateCard = () => {
     return (
       <div className={styles.groupCard} style={{ height: "156px" }}>
