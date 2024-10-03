@@ -4,11 +4,13 @@ import Button from "@components/all/Button";
 
 export default function OkModal({ handleModal, variant }) {
   const navigate = useNavigate();
+  console.log(variant);
 
   const handleOnClick = () => {
     handleModal(false);
 
-    if (variant === "createSuccess" || variant === "createFail") navigate("/");
+    if (["createSuccess", "createFail", "deleteSuccess"].includes(variant))
+      navigate("/");
     if (variant === "updateSuccess") navigate(0);
   };
 
@@ -28,6 +30,14 @@ export default function OkModal({ handleModal, variant }) {
     updateFail: {
       mainText: "그룹 수정 실패",
       subText: "그룹 수정에 실패했습니다.",
+    },
+    deleteSuccess: {
+      mainText: "그룹 삭제 성공",
+      subText: "그룹이 성공적으로 삭제되었습니다.",
+    },
+    deleteFail: {
+      mainText: "그룹 삭제 실패",
+      subText: "그룹 삭제에 실패했습니다.",
     },
     accessDenied: {
       mainText: "비공개 그룹 접근 실패",

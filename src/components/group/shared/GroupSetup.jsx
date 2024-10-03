@@ -30,7 +30,6 @@ export default function GroupSetup({
   const [submitStatus, setSubmitStatus] = useState("");
   const fileInputRef = useRef();
 
-  console.log(values, groupId);
   const handleChange = (e) => {
     const { id } = e.target;
     let value;

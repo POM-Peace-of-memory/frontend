@@ -18,8 +18,7 @@ export async function getGroups({
 }
 
 export async function createGroups(groupData) {
-  let data = JSON.stringify(groupData);
-  console.log(`Request body: ${data}`);
+  const data = JSON.stringify(groupData);
   const response = await fetch(`${BASE_URL}/groups`, {
     method: "POST",
     headers: {
@@ -32,12 +31,49 @@ export async function createGroups(groupData) {
     throw new Error("데이터를 생성하는데 실패했습니다");
   }
   const body = await response.json();
-  console.log(body);
+  return body;
+}
+
+export async function updateGroups(groupData, groupId) {
+  try {
+    await verifyPassword(groupData.password, groupId);
+    const data = JSON.stringify(groupData);
+    const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: data,
+    });
+    if (!response.ok) {
+      throw new Error("데이터를 수정하는데 실패했습니다");
+    }
+    const body = await response.json();
+    return body;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteGroups(password, groupId) {
+  const data = JSON.stringify({ password: password });
+  const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  });
+  if (!response.ok) {
+    throw new Error("그룹 삭제에 실패햇습니다.");
+  }
+  const body = await response.json();
   return body;
 }
 
 export async function verifyPassword(password, groupId) {
-  let data = JSON.stringify({ password: password });
+  const data = JSON.stringify({ password: password });
   const response = await fetch(
     `${BASE_URL}/groups/${groupId}/verify-password`,
     {
@@ -53,32 +89,7 @@ export async function verifyPassword(password, groupId) {
     throw new Error("비밀번호 확인에 실패햇습니다.");
   }
   const body = await response.json();
-  console.log(body);
   return body;
-}
-
-export async function updateGroups(groupData, groupId) {
-  try {
-    await verifyPassword(groupData.password, groupId);
-    let data = JSON.stringify(groupData);
-    console.log(`Request body: ${data}`);
-    const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: data,
-    });
-    if (!response.ok) {
-      throw new Error("데이터를 수정하는데 실패했습니다");
-    }
-    const body = await response.json();
-    console.log(body);
-    return body;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export async function uploadImage(file) {
@@ -93,7 +104,6 @@ export async function uploadImage(file) {
     throw new Error("이미지 업로드에 실패했습니다");
   }
   const result = await response.json();
-  console.log(result.imageUrl);
   return result.imageUrl;
 }
 
@@ -130,4 +140,13 @@ export async function getPosts({
   }
   const body = await response.json();
   return body;
+}
+
+export async function isPublic(groupId) {
+  const response = await fetch(`${BASE_URL}/groups/${groupId}/is-public`);
+  if (!response.ok) {
+    throw new Error("그룹 공개 여부를 확인하는데 실패했습니다");
+  }
+  const body = await response.json();
+  return body.isPublic;
 }

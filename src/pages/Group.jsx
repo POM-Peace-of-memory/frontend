@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getPosts } from "@/utils/api";
 import { useLoadData } from "@/hooks/useLoadData";
