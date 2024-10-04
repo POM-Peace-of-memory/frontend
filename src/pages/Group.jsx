@@ -1,4 +1,4 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getPosts } from "@/utils/api";
 import { useLoadData } from "@/hooks/useLoadData";
@@ -7,7 +7,7 @@ import GroupDetail from "@components/group/detail/GroupDetail";
 import SearchBar from "@/components/group/shared/SearchBar";
 import CardList from "@/components/group/shared/CardList";
 import LoadMoreButton from "@/components/group/shared/LoadMoreButton";
-import PageLayout from "../components/group/shared/PageLayout";
+import PageLayout from "@components/group/shared/PageLayout";
 
 export default function Group() {
   const { groupId } = useParams();
