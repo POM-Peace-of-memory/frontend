@@ -32,6 +32,9 @@ export default function GroupDetail({ groupId }) {
     const result = await getGroupDetails(groupId);
     setGroupData(result);
     console.log(result);
+    return () => {
+      groupId = "";
+    };
   }, [groupId]);
 
   return (
