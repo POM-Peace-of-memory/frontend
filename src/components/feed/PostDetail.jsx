@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styles from "./PostDetail.module.css";
 import ModifyModal from "./ModifyModal";
 import DeleteModal from "./DeleteModal";
+import CommentModal from "../chueok/CommentModal";
 
 const PostDetail = () => {
+  const { postId } = useParams();
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -28,23 +31,33 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleCommentChange = (event) => {
     setNewComment(event.target.value);
   };
 
-  const handleCommentSubmit = (event) => {
+  const handleCommentButtonClick = (event) => {
     event.preventDefault();
     if (newComment.trim()) {
-      const newCommentObj = {
-        id: comments.length + 1,
-        author: "익명", //임시로 익명 처리
-        date: new Date().toLocaleString(),
-        text: newComment,
-      };
-      setComments([...comments, newCommentObj]);
-      setNewComment("");
+      setShowCommentModal(true);
+    } else {
+      setErrorMessage("댓글 내용을 입력해 주세요.");
     }
+  };
+
+  const handleCommentSuccess = (newCommentData) => {
+    const formattedDate = new Date(newCommentData.createdAt).toLocaleString();
+    const commentObj = {
+      id: comments.length + 1,
+      author: newCommentData.nickname,
+      date: formattedDate,
+      text: newCommentData.content,
+    };
+    setComments([...comments, commentObj]);
+    setNewComment("");
+    setErrorMessage("");
   };
 
   return (
@@ -94,13 +107,20 @@ const PostDetail = () => {
           앞바다에서 월척을 낚았습니다!
         </p>
       </div>
-      <button type="submit" className={styles.commentButton}>
+      <button
+        type="submit"
+        className={styles.commentButton}
+        onClick={handleCommentButtonClick}
+      >
         댓글 등록하기
       </button>
 
       <div className={styles.commentSection}>
-        <h3>댓글 8</h3>
-        <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
+        <h3>댓글 {comments.length}</h3>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className={styles.commentForm}
+        >
           <textarea
             value={newComment}
             onChange={handleCommentChange}
@@ -109,6 +129,8 @@ const PostDetail = () => {
           />
         </form>
       </div>
+
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
       <div className={styles.commentList}>
         {comments.map((comment) => (
@@ -142,12 +164,19 @@ const PostDetail = () => {
         <button>&raquo;</button>
       </div>
 
-      {/* 모달 */}
       {showModifyModal && (
         <ModifyModal closeModal={() => setShowModifyModal(false)} />
       )}
       {showDeleteModal && (
         <DeleteModal closeModal={() => setShowDeleteModal(false)} />
+      )}
+      {showCommentModal && (
+        <CommentModal
+          closeModal={() => setShowCommentModal(false)}
+          postId={postId}
+          content={newComment}
+          onSuccess={handleCommentSuccess}
+        />
       )}
     </div>
   );

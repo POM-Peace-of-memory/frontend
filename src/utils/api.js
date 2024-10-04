@@ -1,5 +1,5 @@
 const BASE_URL = "https://613508a7-d02f-4d83-9103-b857cae37561.mock.pstmn.io";
-//const BASE_URL = "https://backend-vai1.onrender.com";
+// const BASE_URL = "https://backend-vai1.onrender.com";
 const PAGE_SIZE = 8;
 
 export async function getGroups({
