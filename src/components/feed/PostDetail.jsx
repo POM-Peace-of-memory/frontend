@@ -4,6 +4,7 @@ import styles from "./PostDetail.module.css";
 import ModifyModal from "./ModifyModal";
 import DeleteModal from "./DeleteModal";
 import CommentModal from "../chueok/CommentModal";
+import CommentEditModal from "../chueok/CommentEditModal";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -34,6 +35,10 @@ const PostDetail = () => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState({});
+
   const handleCommentChange = (event) => {
     setNewComment(event.target.value);
   };
@@ -58,6 +63,21 @@ const PostDetail = () => {
     setComments([...comments, commentObj]);
     setNewComment("");
     setErrorMessage("");
+  };
+
+  const handleEditCommentClick = (comment) => {
+    setEditingCommentId(comment.id);
+    setCommentToEdit(comment);
+    setShowEditModal(true);
+  };
+
+  const handleEditCommentSuccess = (updatedComment) => {
+    setComments(
+      comments.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment
+      )
+    );
+    setShowEditModal(false);
   };
 
   return (
@@ -142,7 +162,10 @@ const PostDetail = () => {
             <div className={styles.commentContent}>
               <p className={styles.commentText}>{comment.text}</p>
               <div className={styles.commentActions}>
-                <button className={styles.editButton}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => handleEditCommentClick(comment)}
+                >
                   <img src="src/assets/edit.svg" alt="수정" />
                 </button>
                 <button className={styles.deleteButton}>
@@ -176,6 +199,14 @@ const PostDetail = () => {
           postId={postId}
           content={newComment}
           onSuccess={handleCommentSuccess}
+        />
+      )}
+
+      {showEditModal && (
+        <CommentEditModal
+          comment={commentToEdit}
+          closeModal={() => setShowEditModal(false)}
+          onSuccess={handleEditCommentSuccess}
         />
       )}
     </div>
