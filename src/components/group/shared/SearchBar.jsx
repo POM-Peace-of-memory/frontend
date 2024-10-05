@@ -47,9 +47,9 @@ const ToggleButton = ({ isPublic, updateIsPublic }) => {
   );
 };
 
-const SearchInput = ({ variant, search, updateSearch }) => {
+const SearchInput = ({ variant, search, setSearch }) => {
   const onChangeSearch = (e) => {
-    updateSearch(e.target.value);
+    setSearch(e.target.value);
   };
 
   return (
@@ -86,19 +86,13 @@ const FilterDropdown = ({ variant, updateOrder }) => {
   );
 };
 
-const SearchBar = ({ setFilter, variant }) => {
+const SearchBar = ({ setFilter, variant, search, setSearch }) => {
   const [isPublic, setIsPublic] = useState(true);
-  const [search, setSearch] = useState("");
   const [order, setOrder] = useState("mostLiked");
 
   const updateIsPublic = (state) => {
     setIsPublic(state);
     setFilter((prev) => ({ ...prev, isPublic: state }));
-  };
-
-  const updateSearch = (state) => {
-    setSearch(state);
-    setFilter((prev) => ({ ...prev, search: state }));
   };
 
   const updateOrder = (state) => {
@@ -108,11 +102,7 @@ const SearchBar = ({ setFilter, variant }) => {
   return (
     <div className={styles.searchBar}>
       <ToggleButton isPublic={isPublic} updateIsPublic={updateIsPublic} />
-      <SearchInput
-        variant={variant}
-        search={search}
-        updateSearch={updateSearch}
-      />
+      <SearchInput variant={variant} search={search} setSearch={setSearch} />
       <FilterDropdown variant={variant} updateOrder={updateOrder} />
     </div>
   );

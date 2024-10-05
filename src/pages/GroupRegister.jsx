@@ -5,7 +5,7 @@ export default function GroupRegister() {
   return (
     <>
       <Header />
-      <GroupSetup />
+      <GroupSetup variant="create" />
     </>
   );
 }

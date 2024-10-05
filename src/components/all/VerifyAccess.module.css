@@ -1,0 +1,67 @@
+.container {
+  background: #fafafa;
+  width: 400px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 184px auto;
+}
+
+.title {
+  color: var(--black-black_282828, #282828);
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}
+
+.mention {
+  color: var(--black-black_282828, #282828);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.42px;
+  margin-bottom: 60px;
+}
+
+.label {
+  color: var(--black-black_282828, #282828);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-align: center;
+}
+
+.input {
+  width: 400px;
+  height: 45px;
+  flex-shrink: 0;
+  margin-bottom: 60px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-gray_DDDDDD, #ddd);
+  background: var(--gray-gray_FAFAFA, #fafafa);
+  color: var(--gray-gray_B8B8B8, #b8b8b8);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.42px;
+  margin-top: 10px;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

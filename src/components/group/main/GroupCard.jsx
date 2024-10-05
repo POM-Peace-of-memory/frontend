@@ -64,7 +64,7 @@ export default function GroupCard({ card }) {
         <div className={styles.counterContainer}>
           <div className={styles.badgeCount}>
             <span className="typo-12-regular">획득 배지</span>
-            <span className="typo-14-regular">{card.badgeCount}</span>
+            <span className="typo-14-regular">{card.badgesCount}</span>
           </div>
           <div className={styles.postCount}>
             <span className="typo-12-regular">추억</span>
