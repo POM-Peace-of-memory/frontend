@@ -169,7 +169,9 @@ export default function GroupSetup({
             className={styles.formInput}
           ></input>
         </div>
-        <Button style={{ marginTop: "20px" }}>만들기</Button>
+        <Button style={{ marginTop: "20px" }}>
+          {variant === "create" ? "만들기" : "수정하기"}
+        </Button>
       </form>
       {open && <OkModal handleModal={setOpen} variant={submitStatus} />}
     </div>
