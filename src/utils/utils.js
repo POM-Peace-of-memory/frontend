@@ -28,3 +28,10 @@ export const formatNumber = (num) => {
   }
   return num;
 };
+
+export const formatMoment = (string) => {
+  const year = string.slice(2, 4);
+  const month = string.slice(5, 7);
+  const day = string.slice(8, 10);
+  return `${year}.${month}.${day}`;
+};

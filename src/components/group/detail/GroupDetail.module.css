@@ -53,6 +53,16 @@
   word-break: keep-all;
 }
 
+.groupIntroduction {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  word-break: keep-all;
+  margin-bottom: 15px;
+}
+
 .groupDatePublic {
   display: flex;
   gap: 15px;

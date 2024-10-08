@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { formatNumber } from "@/utils/utils";
+import { formatNumber, formatMoment } from "@/utils/utils";
 import styles from "./MemoryCard.module.css";
 import flower from "@/assets/flower.svg";
 import comment from "@/assets/comment.svg";
@@ -58,7 +58,7 @@ export default function MemoryCard({ card }) {
           <div className={`typo-12-regular ${styles.memoryLog}`}>
             <span>{card.location}</span>
             <span>·</span>
-            <span>24.01.19</span>
+            <span>{formatMoment(card.moment)}</span>
           </div>
           <div className={styles.counterContainer}>
             <div className={styles.likeCount}>
