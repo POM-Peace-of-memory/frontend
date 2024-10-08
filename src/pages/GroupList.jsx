@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getGroups } from "@/utils/api";
 import { useLoadData } from "@/hooks/useLoadData";
@@ -9,6 +9,7 @@ import CardList from "@/components/group/shared/CardList";
 import LoadMoreButton from "@/components/group/shared/LoadMoreButton";
 
 export default function GroupList() {
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = () => {
@@ -23,7 +24,6 @@ export default function GroupList() {
       page,
       sortBy: filter.order,
       isPublic: filter.isPublic,
-      keyword: filter.search,
     });
   };
 
@@ -31,15 +31,27 @@ export default function GroupList() {
     handleLoad({
       sortBy: filter.order,
       isPublic: filter.isPublic,
-      keyword: filter.search,
     });
   }, [filter]);
+
+  const getSearchedList = () => {
+    if (search === "") return data;
+    return data.filter((group) =>
+      group.name.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+  const searchedList = getSearchedList();
 
   return (
     <PageLayout>
       <Header button buttonHandler={handleRegister} />
-      <SearchBar variant="group" setFilter={setFilter} />
-      <CardList variant="group" cards={data} />
+      <SearchBar
+        variant="group"
+        setFilter={setFilter}
+        search={search}
+        setSearch={setSearch}
+      />
+      <CardList variant="group" cards={searchedList} />
       <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
     </PageLayout>
   );

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { calculateDDay, formatNumber } from "@/utils/utils";
-import { getGroupDetails } from "@/utils/api";
+import { getGroupDetails, addLike } from "@/utils/api";
 import { useNavigate } from "react-router-dom";
 import styles from "./GroupDetail.module.css";
 import Badge from "@components/badges/Badge";
 import Button from "@components/all/Button";
+import GroupSetup from "@components/group/shared/GroupSetup";
+import DeleteModal from "@components/group/detail/DeleteModal";
 import flower from "@assets/flower.svg";
+import XIcon from "@assets/xIcon.svg";
 
 const INITIAL_VALUE = {
   id: 0,
@@ -15,30 +18,57 @@ const INITIAL_VALUE = {
   likeCount: 0,
   badges: [],
   postCount: 0,
-  createdAt: "",
+  createdAt: new Date(),
   introduction: "",
 };
 
 export default function GroupDetail({ groupId }) {
   const [groupData, setGroupData] = useState(INITIAL_VALUE);
-  // const [isLoading, setIsLoading] = useState(true)
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleButton = () => {
+  const handleUploadClick = () => {
     navigate("/feed");
   };
 
-  useEffect(async () => {
+  const handleEditClick = () => {
+    setEditOpen(true);
+  };
+
+  const handleDeleteClick = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleLikeClick = async () => {
+    const prevCount = groupData.likeCount;
+    await addLike(groupId);
+    setGroupData((prev) => ({
+      ...prev,
+      likeCount: prevCount + 1,
+    }));
+  };
+
+  const handleLoad = async () => {
     const result = await getGroupDetails(groupId);
     setGroupData(result);
-    console.log(result);
-  }, [groupId]);
+  };
+
+  useEffect(() => {
+    handleLoad();
+  }, []);
 
   return (
     <>
       <div className={styles.groupDetail}>
         <div className={styles.groupImg}>
-          <img src={groupData.imageUrl} alt="그룹이미지" />
+          {groupData.imageUrl === "" ? (
+            <div className={styles.noneImg}>
+              <img src={flower} alt="그룹이미지" />
+            </div>
+          ) : (
+            <img src={groupData.imageUrl} alt="그룹이미지" />
+          )}
         </div>
         <div className={styles.groupInfo}>
           <div className={styles.infoContainer}>
@@ -48,8 +78,8 @@ export default function GroupDetail({ groupId }) {
               <span>{groupData.isPublic ? "공개" : "비공개"}</span>
             </div>
             <div className={`typo-14-regular ${styles.groupUpdateDelete}`}>
-              <button>그룹 정보 수정하기</button>
-              <button>그룹 삭제하기</button>
+              <button onClick={handleEditClick}>그룹 정보 수정하기</button>
+              <button onClick={handleDeleteClick}>그룹 삭제하기</button>
             </div>
           </div>
           <div className={styles.infoContainer}>
@@ -67,7 +97,7 @@ export default function GroupDetail({ groupId }) {
           </div>
           <div className={styles.bagesLikeButton}>
             <Badge />
-            <button className={styles.likeButton}>
+            <button onClick={handleLikeClick} className={styles.likeButton}>
               <img src={flower} alt="공감" />
               <span className="typo-16-medium">공감 보내기</span>
             </button>
@@ -78,10 +108,32 @@ export default function GroupDetail({ groupId }) {
       <div className={styles.memoryHeader}>
         <div></div>
         <span className="typo-24-bold">추억 목록</span>
-        <Button size="small" onClick={handleButton}>
+        <Button size="small" onClick={handleUploadClick}>
           추억 올리기
         </Button>
       </div>
+      {editOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <button
+              className={styles.closeButton}
+              onClick={() => {
+                setEditOpen(false);
+              }}
+            >
+              <img src={XIcon} alt="닫기" />
+            </button>
+            <GroupSetup
+              variant="edit"
+              initialValue={groupData}
+              groupId={groupId}
+            />
+          </div>
+        </div>
+      )}
+      {deleteOpen && (
+        <DeleteModal handleModal={setDeleteOpen} groupId={groupId} />
+      )}
     </>
   );
 }

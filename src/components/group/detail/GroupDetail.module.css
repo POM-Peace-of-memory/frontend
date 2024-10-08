@@ -13,10 +13,25 @@
   align-items: center;
 }
 
-.groupImg img {
+.groupImg > img {
   height: 273px;
   width: 262px;
   border-radius: 6px;
+}
+
+.noneImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 273px;
+  width: 262px;
+  border-radius: 6px;
+  background: #efede4;
+}
+
+.noneImg > img {
+  width: 122px;
+  height: 122px;
 }
 
 .groupInfo {
@@ -121,4 +136,38 @@
 
 .memoryHeader > div {
   width: 200px;
+}
+
+.modalOverlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  position: relative;
+  width: 480px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--gray-50);
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+}
+
+.closeButton img {
+  width: 100%;
+  height: 100%;
 }
