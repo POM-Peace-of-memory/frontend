@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styles from "./PostDetail.module.css";
 import ModifyModal from "./ModifyModal";
 import DeleteModal from "./DeleteModal";
+import CommentModal from "../chueok/CommentModal";
+import CommentEditModal from "../chueok/CommentEditModal";
 
 const PostDetail = () => {
+  const { postId } = useParams();
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -28,23 +32,52 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState({});
 
   const handleCommentChange = (event) => {
     setNewComment(event.target.value);
   };
 
-  const handleCommentSubmit = (event) => {
+  const handleCommentButtonClick = (event) => {
     event.preventDefault();
     if (newComment.trim()) {
-      const newCommentObj = {
-        id: comments.length + 1,
-        author: "익명", //임시로 익명 처리
-        date: new Date().toLocaleString(),
-        text: newComment,
-      };
-      setComments([...comments, newCommentObj]);
-      setNewComment("");
+      setShowCommentModal(true);
+    } else {
+      setErrorMessage("댓글 내용을 입력해 주세요.");
     }
+  };
+
+  const handleCommentSuccess = (newCommentData) => {
+    const formattedDate = new Date(newCommentData.createdAt).toLocaleString();
+    const commentObj = {
+      id: comments.length + 1,
+      author: newCommentData.nickname,
+      date: formattedDate,
+      text: newCommentData.content,
+    };
+    setComments([...comments, commentObj]);
+    setNewComment("");
+    setErrorMessage("");
+  };
+
+  const handleEditCommentClick = (comment) => {
+    setEditingCommentId(comment.id);
+    setCommentToEdit(comment);
+    setShowEditModal(true);
+  };
+
+  const handleEditCommentSuccess = (updatedComment) => {
+    setComments(
+      comments.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment
+      )
+    );
+    setShowEditModal(false);
   };
 
   return (
@@ -94,13 +127,20 @@ const PostDetail = () => {
           앞바다에서 월척을 낚았습니다!
         </p>
       </div>
-      <button type="submit" className={styles.commentButton}>
+      <button
+        type="submit"
+        className={styles.commentButton}
+        onClick={handleCommentButtonClick}
+      >
         댓글 등록하기
       </button>
 
       <div className={styles.commentSection}>
-        <h3>댓글 8</h3>
-        <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
+        <h3>댓글 {comments.length}</h3>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className={styles.commentForm}
+        >
           <textarea
             value={newComment}
             onChange={handleCommentChange}
@@ -110,20 +150,30 @@ const PostDetail = () => {
         </form>
       </div>
 
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+
       <div className={styles.commentList}>
         {comments.map((comment) => (
           <div key={comment.id} className={styles.commentItem}>
             <div className={styles.commentInfo}>
-              <span className={styles.commentAuthor}>{comment.author}</span>
-              <span className={styles.commentDate}>{comment.date}</span>
+              <span className={styles.commentAuthor}>{comment.nickname}</span>
+              <span className={styles.commentDate}>
+                {new Date(comment.createdAt).toLocaleString()}
+              </span>
             </div>
             <div className={styles.commentContent}>
-              <p className={styles.commentText}>{comment.text}</p>
+              <p className={styles.commentText}>{comment.content}</p>
               <div className={styles.commentActions}>
-                <button className={styles.editButton}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => handleEditCommentClick(comment)}
+                >
                   <img src="src/assets/edit.svg" alt="수정" />
                 </button>
-                <button className={styles.deleteButton}>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDeleteCommentClick(comment.id)}
+                >
                   <img src="src/assets/delete.svg" alt="삭제" />
                 </button>
               </div>
@@ -133,21 +183,50 @@ const PostDetail = () => {
       </div>
 
       <div className={styles.pagination}>
-        <button>&laquo;</button>
-        <button className={styles.active}>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>&raquo;</button>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePaginationClick(currentPage - 1)}
+        >
+          &laquo;
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            className={currentPage === i + 1 ? styles.active : ""}
+            onClick={() => handlePaginationClick(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePaginationClick(currentPage + 1)}
+        >
+          &raquo;
+        </button>
       </div>
 
-      {/* 모달 */}
       {showModifyModal && (
         <ModifyModal closeModal={() => setShowModifyModal(false)} />
       )}
       {showDeleteModal && (
         <DeleteModal closeModal={() => setShowDeleteModal(false)} />
+      )}
+      {showCommentModal && (
+        <CommentModal
+          closeModal={() => setShowCommentModal(false)}
+          postId={postId}
+          content={newComment}
+          onSuccess={handleCommentSuccess}
+        />
+      )}
+
+      {showEditModal && (
+        <CommentEditModal
+          comment={commentToEdit}
+          closeModal={() => setShowEditModal(false)}
+          onSuccess={handleEditCommentSuccess}
+        />
       )}
     </div>
   );
