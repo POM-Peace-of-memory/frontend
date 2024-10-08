@@ -47,6 +47,20 @@
   border: 1px solid var(--black);
 }
 
+.invalidateInput {
+  height: 45px;
+  border-radius: 6px;
+  padding-left: 20px;
+  background: var(--gray-50);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+  border: 1px solid var(--red);
+}
+
+.invalidateInput:focus {
+  border: 1px solid var(--red);
+}
+
 .groupForm textarea {
   height: 120px;
   padding-top: 14px;

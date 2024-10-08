@@ -7,7 +7,6 @@ import OkModal from "@components/group/shared/OkModal";
 
 const INITIAL_VALUES = {
   name: "",
-  password: "",
   imageUrl: "",
   isPublic: true,
   introduction: "",
@@ -27,6 +26,7 @@ export default function GroupSetup({
   });
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState({ name: false, password: false });
   const [submitStatus, setSubmitStatus] = useState("");
   const fileInputRef = useRef();
 
@@ -49,6 +49,13 @@ export default function GroupSetup({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (values.name === "" || values.password.length < 8) {
+      if (values.name === "") setError((prev) => ({ ...prev, name: true }));
+      if (values.password.length < 8)
+        setError((prev) => ({ ...prev, password: true }));
+      return;
+    }
 
     let updatedValues = { ...values };
 
@@ -100,8 +107,15 @@ export default function GroupSetup({
             value={values.name}
             placeholder="그룹명을 입력해 주세요"
             onChange={handleChange}
-            className={styles.formInput}
+            className={
+              error.name
+                ? `${styles.formInput} ${styles.invalidateInput}`
+                : `${styles.formInput}`
+            }
           ></input>
+          {error.name && (
+            <span style={{ color: "var(--red)" }}>그룹명은 필수입니다.</span>
+          )}
         </div>
         <div>
           <label htmlFor="image">대표 이미지</label>
@@ -166,8 +180,17 @@ export default function GroupSetup({
                 : "그룹 비밀번호를 입력해 주세요"
             }
             onChange={handleChange}
-            className={styles.formInput}
+            className={
+              error.password
+                ? `${styles.formInput} ${styles.invalidateInput}`
+                : `${styles.formInput}`
+            }
           ></input>
+          {error.password && (
+            <span style={{ color: "var(--red)" }}>
+              비밀번호는 8자리 이상이어야 합니다.
+            </span>
+          )}
         </div>
         <Button style={{ marginTop: "20px" }}>
           {variant === "create" ? "만들기" : "수정하기"}
