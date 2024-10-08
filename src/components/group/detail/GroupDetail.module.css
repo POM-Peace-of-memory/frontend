@@ -17,6 +17,8 @@
   height: 273px;
   width: 262px;
   border-radius: 6px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .noneImg {

@@ -28,6 +28,8 @@ export default function GroupDetail({ groupId }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
 
+  console.log(groupData);
+
   const handleUploadClick = () => {
     navigate("/feed");
   };
@@ -96,7 +98,7 @@ export default function GroupDetail({ groupId }) {
             {groupData.introduction}
           </div>
           <div className={styles.bagesLikeButton}>
-            <Badge />
+            <Badge badges={groupData.badges} />
             <button onClick={handleLikeClick} className={styles.likeButton}>
               <img src={flower} alt="공감" />
               <span className="typo-16-medium">공감 보내기</span>

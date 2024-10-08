@@ -6,6 +6,7 @@ import PostDetailPage from "@pages/PostDetail";
 import GroupRegisterPage from "@pages/GroupRegister";
 import GroupPage from "@pages/Group";
 import GroupListPage from "@pages/GroupList";
+import NotFoundPage from "@pages/NotFound";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/feed" element={<PostPage />} />
         <Route path="/private" element={<PrivatePostPage />} />
         <Route path="/detail" element={<PostDetailPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

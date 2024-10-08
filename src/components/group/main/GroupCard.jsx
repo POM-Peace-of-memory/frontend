@@ -59,7 +59,7 @@ export default function GroupCard({ card }) {
         </div>
         <div className={styles.titleContainer}>
           <span className="typo-16-bold">{card.name}</span>
-          <span>{card.introduction}</span>
+          <span className={styles.introduction}>{card.introduction}</span>
         </div>
         <div className={styles.counterContainer}>
           <div className={styles.badgeCount}>
