@@ -156,11 +156,13 @@ const PostDetail = () => {
         {comments.map((comment) => (
           <div key={comment.id} className={styles.commentItem}>
             <div className={styles.commentInfo}>
-              <span className={styles.commentAuthor}>{comment.author}</span>
-              <span className={styles.commentDate}>{comment.date}</span>
+              <span className={styles.commentAuthor}>{comment.nickname}</span>
+              <span className={styles.commentDate}>
+                {new Date(comment.createdAt).toLocaleString()}
+              </span>
             </div>
             <div className={styles.commentContent}>
-              <p className={styles.commentText}>{comment.text}</p>
+              <p className={styles.commentText}>{comment.content}</p>
               <div className={styles.commentActions}>
                 <button
                   className={styles.editButton}
@@ -168,7 +170,10 @@ const PostDetail = () => {
                 >
                   <img src="src/assets/edit.svg" alt="수정" />
                 </button>
-                <button className={styles.deleteButton}>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDeleteCommentClick(comment.id)}
+                >
                   <img src="src/assets/delete.svg" alt="삭제" />
                 </button>
               </div>
@@ -178,13 +183,27 @@ const PostDetail = () => {
       </div>
 
       <div className={styles.pagination}>
-        <button>&laquo;</button>
-        <button className={styles.active}>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>&raquo;</button>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePaginationClick(currentPage - 1)}
+        >
+          &laquo;
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            className={currentPage === i + 1 ? styles.active : ""}
+            onClick={() => handlePaginationClick(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePaginationClick(currentPage + 1)}
+        >
+          &raquo;
+        </button>
       </div>
 
       {showModifyModal && (
