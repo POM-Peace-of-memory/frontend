@@ -1,4 +1,3 @@
-
 // const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
 const BASE_URL = "https://backend-vai1.onrender.com/api";
 
@@ -139,7 +138,6 @@ export async function getPosts({
   return body;
 }
 
-
 export async function createComment(postId, commentData) {
   const response = await fetch(`${BASE_URL}/posts/${postId}/comments`, {
     method: "POST",
@@ -183,6 +181,7 @@ export async function deleteComment(commentId, password) {
     throw new Error(errorData.message || "댓글 삭제에 실패했습니다.");
   }
   return true;
+}
 
 export async function isPublic(groupId) {
   const response = await fetch(`${BASE_URL}/groups/${groupId}/is-public`);
@@ -191,5 +190,4 @@ export async function isPublic(groupId) {
   }
   const body = await response.json();
   return body.isPublic;
-
 }
