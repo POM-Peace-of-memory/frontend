@@ -35,25 +35,20 @@ export async function createGroups(groupData) {
 }
 
 export async function updateGroups(groupData, groupId) {
-  try {
-    await verifyPassword(groupData.password, groupId);
-    const data = JSON.stringify(groupData);
-    const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: data,
-    });
-    if (!response.ok) {
-      throw new Error("데이터를 수정하는데 실패했습니다");
-    }
-    const body = await response.json();
-    return body;
-  } catch (error) {
-    throw error;
+  const data = JSON.stringify(groupData);
+  const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: data,
+  });
+  if (!response.ok) {
+    throw new Error("데이터를 수정하는데 실패했습니다");
   }
+  const body = await response.json();
+  return body;
 }
 
 export async function deleteGroups(password, groupId) {
