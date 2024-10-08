@@ -68,23 +68,26 @@ export async function deleteGroups(password, groupId) {
   return body;
 }
 
-export async function verifyPassword(password, groupId) {
+export async function verifyPassword(password, id, variant) {
   const data = JSON.stringify({ password: password });
-  const response = await fetch(
-    `${BASE_URL}/groups/${groupId}/verify-password`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-    }
-  );
+  const response = await fetch(`${BASE_URL}/${variant}/${id}/verify-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  });
 
   if (!response.ok) {
-    throw new Error("비밀번호 확인에 실패햇습니다.");
+    if (response.status === 401) {
+      throw new Error("비밀번호가 일치하지 않습니다.");
+    } else {
+      throw new Error("비밀번호 확인에 실패했습니다.");
+    }
   }
+
   const body = await response.json();
+  console.log(body);
   return body;
 }
 
@@ -130,14 +133,12 @@ export async function getPosts({
   groupId = "",
 }) {
   const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&keyword=${keyword}&isPublic=${isPublic}`;
-  console.log(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   if (!response.ok) {
     console.log(response.body);
     throw new Error("게시글 목록 데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();
-  console.log(body);
   return body;
 }
 

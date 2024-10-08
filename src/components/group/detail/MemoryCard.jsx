@@ -78,8 +78,16 @@ export default function MemoryCard({ card }) {
   };
 
   return (
-    <Link to="/detail" className={styles.groupLink}>
-      {card.isPublic ? renderPublicCard() : renderPrivateCard()}
-    </Link>
+    <>
+      {card.isPublic ? (
+        <Link to="/detail" className={styles.groupLink}>
+          {renderPublicCard()}
+        </Link>
+      ) : (
+        <Link to="/private" className={styles.groupLink}>
+          {renderPrivateCard()}
+        </Link>
+      )}
+    </>
   );
 }
