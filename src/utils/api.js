@@ -1,5 +1,6 @@
 // const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
 const BASE_URL = "https://backend-vai1.onrender.com/api";
+
 const PAGE_SIZE = 8;
 
 export async function getGroups({
@@ -138,6 +139,51 @@ export async function getPosts({
   const body = await response.json();
   console.log(body);
   return body;
+}
+
+export async function createComment(postId, commentData) {
+  const response = await fetch(`${BASE_URL}/posts/${postId}/comments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(commentData),
+  });
+  if (!response.ok) {
+    throw new Error("댓글 등록에 실패했습니다.");
+  }
+  const body = await response.json();
+  return body;
+}
+
+export async function updateComment(commentId, updatedData) {
+  const response = await fetch(`${BASE_URL}/comments/${commentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedData),
+  });
+  if (!response.ok) {
+    throw new Error("댓글 수정에 실패했습니다.");
+  }
+  const body = await response.json();
+  return body;
+}
+
+export async function deleteComment(commentId, password) {
+  const response = await fetch(`${BASE_URL}/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password }),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "댓글 삭제에 실패했습니다.");
+  }
+  return true;
 }
 
 export async function isPublic(groupId) {
