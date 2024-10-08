@@ -126,14 +126,17 @@ export async function getPosts({
   sortBy = "mostLiked",
   isPublic = true,
   keyword = "",
-  groupId = 0,
+  groupId = "",
 }) {
-  const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&isPublic=${isPublic}&keyword=${keyword}&groupId=${groupId}`;
+  const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&keyword=${keyword}&isPublic=${isPublic}`;
+  console.log(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   if (!response.ok) {
+    console.log(response.body);
     throw new Error("게시글 목록 데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();
+  console.log(body);
   return body;
 }
 

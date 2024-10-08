@@ -28,8 +28,6 @@ export default function GroupDetail({ groupId }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
 
-  console.log(groupData);
-
   const handleUploadClick = () => {
     navigate("/feed");
   };

@@ -5,6 +5,7 @@ import flower from "@/assets/flower.svg";
 import comment from "@/assets/comment.svg";
 
 export default function MemoryCard({ card }) {
+  console.log(card);
   const renderPrivateCard = () => {
     return (
       <div className={styles.memoryCard} style={{ height: "142px" }}>
@@ -49,7 +50,7 @@ export default function MemoryCard({ card }) {
           <span className="typo-16-bold">{card.title}</span>
           <div className={styles.memoryTag}>
             {card.tags.map((tag, idx) => (
-              <span className="typo-14-regular" key={idx}>{`# ${tag}`}</span>
+              <span className="typo-14-regular" key={idx}>{` ${tag}`}</span>
             ))}
           </div>
         </div>

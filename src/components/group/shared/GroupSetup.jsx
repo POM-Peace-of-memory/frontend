@@ -86,7 +86,6 @@ export default function GroupSetup({
         setSubmitStatus("updateFail");
       }
     }
-    console.log(result);
     setOpen(true);
   };
 

@@ -21,6 +21,7 @@ export default function Group() {
       sortBy: filter.order,
       isPublic: filter.isPublic,
       keyword: filter.search,
+      groupId,
     });
   };
 
@@ -29,6 +30,7 @@ export default function Group() {
       sortBy: filter.order,
       isPublic: filter.isPublic,
       keyword: filter.search,
+      groupId,
     });
   }, [filter]);
 
