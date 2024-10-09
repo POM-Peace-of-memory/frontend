@@ -10,7 +10,6 @@ export default function DeleteModal({ handleModal, groupId }) {
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
-  const navigate = useNavigate();
 
   const handleDelteClick = async () => {
     let result;

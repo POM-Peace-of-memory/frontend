@@ -46,7 +46,11 @@ export async function updateGroups(groupData, groupId) {
     body: data,
   });
   if (!response.ok) {
-    throw new Error("데이터를 수정하는데 실패했습니다");
+    if (response.status === 403) {
+      throw new Error("비밀번호가 일치하지 않습니다.");
+    } else {
+      throw new Error("데이터를 수정하는데 실패했습니다");
+    }
   }
   const body = await response.json();
   return body;
@@ -133,6 +137,7 @@ export async function getPosts({
   groupId = "",
 }) {
   const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&keyword=${keyword}&isPublic=${isPublic}`;
+  console.log(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   if (!response.ok) {
     console.log(response.body);

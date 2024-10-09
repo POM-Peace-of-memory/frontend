@@ -31,6 +31,10 @@ export default function OkModal({ handleModal, variant }) {
       mainText: "그룹 수정 실패",
       subText: "그룹 수정에 실패했습니다.",
     },
+    updatePasswordFail: {
+      mainText: "그룹 수정 실패",
+      subText: "비밀번호가 일치하지 않습니다.",
+    },
     deleteSuccess: {
       mainText: "그룹 삭제 성공",
       subText: "그룹이 성공적으로 삭제되었습니다.",

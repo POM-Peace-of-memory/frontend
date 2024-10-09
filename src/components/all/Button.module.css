@@ -9,10 +9,16 @@
   color: var(--gray-50);
   text-align: center;
   letter-spacing: -0.42px;
+  transition: all 0.3s ease;
 }
 
 .button:hover {
-  cursor: pointer;
+  opacity: 0.9;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .buttonDefault {

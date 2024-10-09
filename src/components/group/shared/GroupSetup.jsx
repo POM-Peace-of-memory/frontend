@@ -28,6 +28,7 @@ export default function GroupSetup({
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({ name: false, password: false });
   const [submitStatus, setSubmitStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef();
 
   const handleChange = (e) => {
@@ -41,6 +42,12 @@ export default function GroupSetup({
       ...prev,
       [id]: value,
     }));
+
+    if (id === "name") {
+      setError((prev) => ({ ...prev, name: value === "" }));
+    } else if (id === "password") {
+      setError((prev) => ({ ...prev, password: value.length < 8 }));
+    }
   };
 
   const handleImageChange = (e) => {
@@ -51,12 +58,12 @@ export default function GroupSetup({
     e.preventDefault();
 
     if (values.name === "" || values.password.length < 8) {
-      if (values.name === "") setError((prev) => ({ ...prev, name: true }));
-      if (values.password.length < 8)
-        setError((prev) => ({ ...prev, password: true }));
+      setError((prev) => ({ ...prev, name: values.name === "" }));
+      setError((prev) => ({ ...prev, password: values.password.length < 8 }));
       return;
     }
 
+    setIsLoading(true);
     let updatedValues = { ...values };
 
     if (image) {
@@ -83,9 +90,12 @@ export default function GroupSetup({
         setSubmitStatus("updateSuccess");
       } catch (error) {
         console.log(error);
-        setSubmitStatus("updateFail");
+        if (error.message === "비밀번호가 일치하지 않습니다.")
+          setSubmitStatus("updatePasswordFail");
+        else setSubmitStatus("updateFail");
       }
     }
+    setIsLoading(false);
     setOpen(true);
   };
 
@@ -191,8 +201,12 @@ export default function GroupSetup({
             </span>
           )}
         </div>
-        <Button style={{ marginTop: "20px" }}>
-          {variant === "create" ? "만들기" : "수정하기"}
+        <Button style={{ marginTop: "20px" }} disabled={isLoading}>
+          {isLoading
+            ? "처리 중..."
+            : variant === "create"
+            ? "만들기"
+            : "수정하기"}
         </Button>
       </form>
       {open && <OkModal handleModal={setOpen} variant={submitStatus} />}

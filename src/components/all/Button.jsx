@@ -6,16 +6,12 @@ import styles from "./Button.module.css";
  * @param {string} children - 버튼 텍스트
  * @returns {JSX.Element} 버튼 요소
  */
-export default function Button({ size = "default", children, onClick, style }) {
+export default function Button({ size = "default", children, ...props }) {
   const sizeClass =
     size === "small" ? styles.buttonSmall : styles.buttonDefault;
   const typoClass = size === "small" ? "typo-14-bold" : "typo-16-medium";
   return (
-    <button
-      className={`${styles.button} ${sizeClass} ${typoClass}`}
-      onClick={onClick}
-      style={style}
-    >
+    <button className={`${styles.button} ${sizeClass} ${typoClass}`} {...props}>
       {children}
     </button>
   );

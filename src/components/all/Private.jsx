@@ -52,8 +52,8 @@ export default function Private({ id, variant }) {
           placeholder={`${renderText[variant]} 비밀번호를 입력해 주세요`}
           required
         />
-        <Button onClick={handleSubmitClick}>
-          {isVerifying ? "확인 중..." : "제출하기"}
+        <Button onClick={handleSubmitClick} disabled={isVerifying}>
+          {isVerifying ? "처리 중..." : "제출하기"}
         </Button>
       </form>
       {open && <OkModal handleModal={setOpen} variant={submitStatus} />}
