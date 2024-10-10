@@ -66,7 +66,11 @@ export async function deleteGroups(password, groupId) {
     body: data,
   });
   if (!response.ok) {
-    throw new Error("그룹 삭제에 실패햇습니다.");
+    if (response.status === 403) {
+      throw new Error("비밀번호가 일치하지 않습니다.");
+    } else {
+      throw new Error("그룹 삭제에 실패햇습니다.");
+    }
   }
   const body = await response.json();
   return body;
@@ -91,7 +95,6 @@ export async function verifyPassword(password, id, variant) {
   }
 
   const body = await response.json();
-  console.log(body);
   return body;
 }
 
