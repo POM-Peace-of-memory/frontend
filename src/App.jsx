@@ -8,10 +8,12 @@ import GroupPage from "@pages/Group";
 import GroupListPage from "@pages/GroupList";
 import NotFoundPage from "@pages/NotFound";
 import "./App.css";
+import ScrollToTop from "@components/all/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="groups">

@@ -165,7 +165,7 @@
 .modal {
   position: relative;
   width: 480px;
-  height: 90%;
+  max-height: 90%;
   overflow-y: scroll;
   box-sizing: border-box;
   flex-shrink: 0;
