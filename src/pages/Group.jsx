@@ -32,6 +32,7 @@ export default function Group() {
       keyword: filter.search,
       groupId,
     });
+    console.log(filter);
   }, [filter]);
 
   return (
