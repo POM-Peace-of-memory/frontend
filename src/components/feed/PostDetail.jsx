@@ -1,52 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./PostDetail.module.css";
 import ModifyModal from "./ModifyModal";
 import DeleteModal from "./DeleteModal";
 import CommentModal from "../chueok/CommentModal";
 import CommentEditModal from "../chueok/CommentEditModal";
+import CommentDeleteModal from "@components/chueok/CommentDeleteModal";
+import { createComment, deleteComment, updateComment } from "@utils/api";
 
 const PostDetail = () => {
   const { postId } = useParams();
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: "다람이네가족",
-      date: "24.01.18 21:50",
-      text: "우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~",
-    },
-    {
-      id: 2,
-      author: "핑구",
-      date: "24.01.18 21:50",
-      text: "우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~",
-    },
-    {
-      id: 3,
-      author: "달팽스",
-      date: "24.01.18 21:50",
-      text: "우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~",
-    },
-  ]);
-
+  console.log(postId);
+  const [comments, setComments] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [newComment, setNewComment] = useState("");
+  const [showCommentModal, setShowCommentModal] = useState(false);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState({});
+  const [showCommentDeleteModal, setShowCommentDeleteModal] = useState(false);
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
 
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
+  const fetchComments = async (page = 1) => {
+    try {
+      const response = await fetch(
+        `/api/posts/${postId}/comments?page=${page}&pageSize=10`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch comments.");
+      }
+      const data = await response.json();
+      setComments(data.data);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("댓글을 불러오는데 실패했습니다.");
+    }
   };
 
-  const handleCommentButtonClick = (event) => {
+  useEffect(() => {
+    fetchComments(currentPage);
+  }, [currentPage]);
+
+  const handleCommentButtonClick = async (event) => {
     event.preventDefault();
+    setShowCommentModal(true);
     if (newComment.trim()) {
-      setShowCommentModal(true);
+      try {
+        const newCommentData = {
+          content: newComment,
+          nickname: "UserNickname",
+          password: "UserPassword",
+        };
+        const createdComment = await createComment(postId, newCommentData);
+        handleCommentSuccess(createdComment);
+      } catch (error) {
+        setErrorMessage("댓글 등록에 실패했습니다.");
+        console.error(error);
+      }
     } else {
       setErrorMessage("댓글 내용을 입력해 주세요.");
     }
@@ -55,10 +71,10 @@ const PostDetail = () => {
   const handleCommentSuccess = (newCommentData) => {
     const formattedDate = new Date(newCommentData.createdAt).toLocaleString();
     const commentObj = {
-      id: comments.length + 1,
-      author: newCommentData.nickname,
-      date: formattedDate,
-      text: newCommentData.content,
+      id: newCommentData.id,
+      nickname: newCommentData.nickname,
+      createdAt: formattedDate,
+      content: newCommentData.content,
     };
     setComments([...comments, commentObj]);
     setNewComment("");
@@ -71,13 +87,45 @@ const PostDetail = () => {
     setShowEditModal(true);
   };
 
-  const handleEditCommentSuccess = (updatedComment) => {
-    setComments(
-      comments.map((comment) =>
-        comment.id === updatedComment.id ? updatedComment : comment
-      )
-    );
-    setShowEditModal(false);
+  const handleEditCommentSuccess = async (updatedCommentContent, password) => {
+    try {
+      const updatedCommentData = { content: updatedCommentContent, password };
+      const updatedComment = await updateComment(
+        editingCommentId,
+        updatedCommentData
+      );
+      setComments(
+        comments.map((comment) =>
+          comment.id === updatedComment.id ? updatedComment : comment
+        )
+      );
+      setShowEditModal(false);
+    } catch (error) {
+      setErrorMessage("댓글 수정에 실패했습니다.");
+      console.error(error);
+    }
+  };
+
+  const handleDeleteCommentClick = (commentId) => {
+    setDeletingCommentId(commentId);
+    setShowCommentDeleteModal(true);
+  };
+
+  const handleDeleteComment = async (commentId, password) => {
+    try {
+      await deleteComment(commentId, password);
+      setComments(comments.filter((comment) => comment.id !== commentId));
+      setShowCommentDeleteModal(false);
+    } catch (error) {
+      setErrorMessage("댓글 삭제에 실패했습니다.");
+      console.error(error);
+    }
+  };
+
+  const handlePaginationClick = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
   };
 
   return (
@@ -99,34 +147,7 @@ const PostDetail = () => {
           추억 삭제하기
         </button>
       </div>
-      <div className={styles.titleSection}>
-        <h1>인천 앞바다에서 무려 60cm 월척을 낚다!</h1>
-        <div>
-          <span className={styles.category}>#인천 #낚시</span>
-        </div>
-        <div className={styles.contentTitle}>
-          <span>인천 앞바다 · 24.01.19</span>
-          <span className={styles.viewsComments}>
-            <img src="src/assets/flower.svg" alt="조회수" />
-            <span>120</span>
-            <img src="src/assets/comment.svg" alt="댓글" />
-            <span>8</span>
-          </span>
-        </div>
-      </div>
-      <div className={styles.imageSection}>
-        <img src="src/assets/Image 4.svg" alt="인천 앞바다 게시물 이미지" />
-      </div>
 
-      <div className={styles.contentSection}>
-        <p>
-          인천 앞바다에서 월척을 낚았습니다! 가족들과 기억에 오래도록 남을 멋진
-          하루였어요 가족들과 기억에 오래도록 남을 멋진 하루였어요 가족들과
-          기억에 오래도록 남을 멋진 하루였어요 인천 앞바다에서 월척을
-          낚았습니다! 가족들과 기억에 오래도록 남을 멋진 하루였어요 인천
-          앞바다에서 월척을 낚았습니다!
-        </p>
-      </div>
       <button
         type="submit"
         className={styles.commentButton}
@@ -143,7 +164,7 @@ const PostDetail = () => {
         >
           <textarea
             value={newComment}
-            onChange={handleCommentChange}
+            onChange={(e) => setNewComment(e.target.value)}
             placeholder="댓글을 입력해 주세요"
             className={styles.commentInput}
           />
@@ -206,19 +227,17 @@ const PostDetail = () => {
         </button>
       </div>
 
+      {showCommentModal && (
+        <CommentModal
+          closeModal={() => setShowCommentModal(false)}
+          onCommentSuccess={handleCommentSuccess} 
+        />
+      )}
       {showModifyModal && (
         <ModifyModal closeModal={() => setShowModifyModal(false)} />
       )}
       {showDeleteModal && (
         <DeleteModal closeModal={() => setShowDeleteModal(false)} />
-      )}
-      {showCommentModal && (
-        <CommentModal
-          closeModal={() => setShowCommentModal(false)}
-          postId={postId}
-          content={newComment}
-          onSuccess={handleCommentSuccess}
-        />
       )}
 
       {showEditModal && (
@@ -226,6 +245,14 @@ const PostDetail = () => {
           comment={commentToEdit}
           closeModal={() => setShowEditModal(false)}
           onSuccess={handleEditCommentSuccess}
+        />
+      )}
+
+      {showCommentDeleteModal && (
+        <CommentDeleteModal
+          closeModal={() => setShowCommentDeleteModal(false)}
+          commentId={deletingCommentId}
+          onDelete={handleDeleteComment}
         />
       )}
     </div>
