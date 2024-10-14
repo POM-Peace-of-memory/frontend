@@ -26,8 +26,8 @@ function App() {
           <Route path="register" element={<GroupRegisterPage />} />
         </Route>
         <Route path="/feed" element={<PostPage />} />
-        <Route path="/private" element={<PrivatePage variant={"posts"} />} />
-        <Route path="/detail" element={<PostDetailPage />} />
+        <Route path="/private" element={<PrivatePage />} />
+        <Route path="/posts/:postId" element={<PostDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
