@@ -15,6 +15,7 @@ export async function getGroups({
     throw new Error("데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();
+  console.log(body);
   return body;
 }
 
@@ -32,6 +33,7 @@ export async function createGroups(groupData) {
     throw new Error("데이터를 생성하는데 실패했습니다");
   }
   const body = await response.json();
+  console.log(body);
   return body;
 }
 

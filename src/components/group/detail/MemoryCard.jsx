@@ -80,11 +80,11 @@ export default function MemoryCard({ card }) {
   return (
     <>
       {card.isPublic ? (
-        <Link to="/detail" className={styles.groupLink}>
+        <Link to={`/posts/${card.id}`} className={styles.groupLink}>
           {renderPublicCard()}
         </Link>
       ) : (
-        <Link to="/private" className={styles.groupLink}>
+        <Link to={`/posts/${card.id}/private`} className={styles.groupLink}>
           {renderPrivateCard()}
         </Link>
       )}

@@ -7,8 +7,8 @@ import GroupRegisterPage from "@pages/GroupRegister";
 import GroupPage from "@pages/Group";
 import GroupListPage from "@pages/GroupList";
 import NotFoundPage from "@pages/NotFound";
-import "./App.css";
 import ScrollToTop from "@components/all/ScrollToTop";
+import "./App.css";
 
 function App() {
   return (
