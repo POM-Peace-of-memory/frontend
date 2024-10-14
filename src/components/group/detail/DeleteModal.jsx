@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { deleteGroups } from "@/utils/api";
 import styles from "./DeleteModal.module.css";
 import Button from "@components/all/Button";
@@ -10,18 +9,20 @@ export default function DeleteModal({ handleModal, groupId }) {
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelteClick = async () => {
+    setIsLoading(true);
     let result;
     try {
       result = await deleteGroups(password, groupId);
       setSubmitStatus("deleteSuccess");
     } catch (error) {
-      console.log(error);
-      setSubmitStatus("deleteFail");
+      if (error.message === "비밀번호가 일치하지 않습니다.")
+        setSubmitStatus("deletePasswordFail");
+      else setSubmitStatus("deleteFail");
     }
-    console.log(result);
+    setIsLoading(false);
     setOpen(true);
   };
 
@@ -46,7 +47,9 @@ export default function DeleteModal({ handleModal, groupId }) {
             }}
           ></input>
         </div>
-        <Button onClick={handleDelteClick}>삭제하기</Button>
+        <Button disabled={isLoading} onClick={handleDelteClick}>
+          {isLoading ? "처리 중..." : "삭제하기"}
+        </Button>
       </div>
       {open && <OkModal handleModal={setOpen} variant={submitStatus} />}
     </div>

@@ -28,8 +28,6 @@ export default function GroupDetail({ groupId }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
 
-  console.log(groupData);
-
   const handleUploadClick = () => {
     navigate("/feed");
   };
@@ -94,7 +92,7 @@ export default function GroupDetail({ groupId }) {
               <span>그룹 공감 {formatNumber(groupData.likeCount)}</span>
             </div>
           </div>
-          <div className={`typo-18-regular ${styles.infoContainer}`}>
+          <div className={`typo-18-regular ${styles.groupIntroduction}`}>
             {groupData.introduction}
           </div>
           <div className={styles.bagesLikeButton}>

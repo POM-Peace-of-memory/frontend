@@ -4,7 +4,6 @@ import Button from "@components/all/Button";
 
 export default function OkModal({ handleModal, variant }) {
   const navigate = useNavigate();
-  console.log(variant);
 
   const handleOnClick = () => {
     handleModal(false);
@@ -31,6 +30,10 @@ export default function OkModal({ handleModal, variant }) {
       mainText: "그룹 수정 실패",
       subText: "그룹 수정에 실패했습니다.",
     },
+    updatePasswordFail: {
+      mainText: "그룹 수정 실패",
+      subText: "비밀번호가 일치하지 않습니다.",
+    },
     deleteSuccess: {
       mainText: "그룹 삭제 성공",
       subText: "그룹이 성공적으로 삭제되었습니다.",
@@ -39,9 +42,17 @@ export default function OkModal({ handleModal, variant }) {
       mainText: "그룹 삭제 실패",
       subText: "그룹 삭제에 실패했습니다.",
     },
-    accessDenied: {
-      mainText: "비공개 그룹 접근 실패",
+    deletePasswordFail: {
+      mainText: "그룹 삭제 실패",
       subText: "비밀번호가 일치하지 않습니다.",
+    },
+    accessDenied: {
+      mainText: "비공개 페이지 접근 실패",
+      subText: "비밀번호가 일치하지 않습니다.",
+    },
+    networkError: {
+      mainText: "서버 연결 장애 발생",
+      subText: "서버와의 연결에 실패했습니다.",
     },
   };
 

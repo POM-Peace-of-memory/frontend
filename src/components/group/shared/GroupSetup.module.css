@@ -36,6 +36,7 @@
   background: var(--gray-50);
   font-size: var(--font-size-14);
   font-weight: 400;
+  transition: all 0.3s ease-out;
 }
 
 .formInput::placeholder {
@@ -94,7 +95,11 @@
   height: 45px;
   border-radius: 6px;
   border: 1px solid var(--black);
-  background: var(--gray-50);
+  transition: all 0.3s ease;
+}
+
+.formFileInput button:hover {
+  background-color: var(--white);
 }
 
 .formFileInput input {

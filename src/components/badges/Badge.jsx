@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import rightArrow from "@assets/rightArrow.svg";
 import leftArrow from "@assets/leftArrow.svg";
 import styles from "./Badge.module.css";
+
 const renderBadges = {
   badge1: "👾\u00A0\u00A0 7일 연속 추억 등록",
   badge2: "🎞️\u00A0\u00A0 추억 수 20개 이상 등록",
@@ -11,7 +12,6 @@ const renderBadges = {
 };
 
 export default function Badge({ badges }) {
-  console.log(badges);
   const badgeListRef = useRef(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);

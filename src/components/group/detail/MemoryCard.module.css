@@ -54,6 +54,14 @@
   letter-spacing: -0.48px;
 }
 
+.titleContainer > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .memoryTag {
   display: flex;
   color: var(--gray-400);
