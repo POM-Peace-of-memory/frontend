@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 import styles from "./Post.module.css";
 import UploadButton from "../all/Button";
 import UploadPermissionModal from "./UploadPermissionModal";
+import { uploadImage } from "@utils/api";
 
 export default function Post() {
-  const { groupId } = useParams(); 
+  const { groupId } = useParams();
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -16,9 +17,9 @@ export default function Post() {
   const [postPassword, setPostPassword] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
-  const [postData, setPostData] = useState(null); 
+  const [postData, setPostData] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +36,7 @@ export default function Post() {
         setTags([...tags, formattedTag]);
       }
       event.target.value = "";
-      event.preventDefault(); 
+      event.preventDefault();
     }
   };
 
@@ -52,57 +53,40 @@ export default function Post() {
   };
 
   const preparePostData = async () => {
-    //필수 입력 필드 검증
     if (
       !nickname.trim() ||
       !title.trim() ||
       !content.trim() ||
-      !postPassword.trim() ||
-      tags.length === 0
+      !postPassword.trim()
     ) {
       setErrorMessage("필수 항목을 모두 입력해 주세요.");
       return false;
     }
 
-    //이미지 업로드 (일단 임시 이미지 업로드 URL 사용)
     let imageURL = "";
     if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
       try {
-        const imageUploadResponse = await fetch("/api/uploadImage", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (imageUploadResponse.ok) {
-          const imageData = await imageUploadResponse.json();
-          imageURL = imageData.url; //업로드된 이미지 URL을 받음
-        } else {
-          setErrorMessage("이미지 업로드에 실패했습니다.");
-          return false;
-        }
+        const imageUploadResponse = await uploadImage(selectedFile);
+        imageURL = imageUploadResponse;
       } catch (error) {
-        console.error("이미지 업로드 실패:", error);
-        setErrorMessage("이미지 업로드 중 오류가 발생했습니다.");
+        setErrorMessage("이미지 업로드에 실패했습니다.");
         return false;
       }
     }
 
     const preparedData = {
-      nickname,
-      title,
-      content,
-      postPassword,
+      nickname: nickname.trim(),
+      title: title.trim(),
+      content: content.trim(),
+      postPassword: postPassword.trim(),
       imageURL,
-      tags, 
+      tags,
       location,
       moment,
       isPublic,
     };
 
-    setPostData(preparedData); 
+    setPostData(preparedData);
     return true;
   };
 
@@ -122,8 +106,6 @@ export default function Post() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("게시물 등록 성공:", data);
         setIsModalOpen(false);
         setNickname("");
         setTitle("");
@@ -137,11 +119,9 @@ export default function Post() {
         setErrorMessage("");
       } else {
         const errorData = await response.json();
-        console.error("게시물 등록 실패:", errorData);
         setErrorMessage(errorData.message || "게시물 등록에 실패했습니다.");
       }
     } catch (error) {
-      console.error("API 요청 실패:", error);
       setErrorMessage("서버와의 연결에 실패했습니다.");
     }
   };
@@ -150,7 +130,7 @@ export default function Post() {
     event.preventDefault();
     const isPrepared = await preparePostData();
     if (isPrepared) {
-      setIsModalOpen(true); 
+      setIsModalOpen(true);
     }
   };
 
@@ -166,7 +146,7 @@ export default function Post() {
     <div className={styles.postContainer}>
       <div className={styles.modalWrapper}>
         <h2 className={styles.heading}>추억 올리기</h2>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}{" "}
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         <form className={styles.postModal} onSubmit={handleSubmit}>
           <section className={styles.leftSide}>
             <label className={styles.label}>닉네임</label>
@@ -271,24 +251,25 @@ export default function Post() {
 
             <label className={styles.label}>추억의 순간</label>
             <input
-              className={styles.dateInput}
               type="date"
+              className={styles.dateInput}
               value={moment}
               onChange={(e) => setMoment(e.target.value)}
+              placeholder="YYYY-MM-DD"
             />
 
-            <label className={styles.label}>비밀번호 생성</label>
+            <label className={styles.label}>비밀번호</label>
             <input
               className={styles.input}
+              type="password"
               value={postPassword}
               onChange={(e) => setPostPassword(e.target.value)}
-              placeholder="추억 비밀번호를 생성해 주세요"
+              placeholder="비밀번호를 입력해 주세요"
               required
             />
 
-            <label className={styles.label}>추억 공개 선택</label>
             <div className={styles.toggleWrapper}>
-              <span className={styles.toggleLabel}>공개</span>
+              <span className={styles.toggleLabel}>공개 여부</span>
               <label className={styles.switch}>
                 <input
                   type="checkbox"
@@ -298,13 +279,17 @@ export default function Post() {
                 <span className={styles.slider}></span>
               </label>
             </div>
+
+            <div className={styles.buttonWrapper}>
+              <UploadButton type="submit">추억 업로드</UploadButton>
+            </div>
           </section>
         </form>
-        <UploadButton onClick={handleSubmit}>올리기</UploadButton>
       </div>
 
       {isModalOpen && (
         <UploadPermissionModal
+          isOpen={isModalOpen}
           closeModal={closeModal}
           groupId={groupId}
           onSuccess={handleModalSuccess}

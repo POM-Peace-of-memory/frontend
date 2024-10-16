@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./UploadPermissionModal.module.css";
+import { verifyPassword } from "@utils/api"; 
 
 export default function UploadPermissionModal({
   closeModal,
@@ -16,27 +17,15 @@ export default function UploadPermissionModal({
     setErrorMessage("");
 
     try {
-      const response = await fetch(`/api/groups/${groupId}/verify-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password }),
-      });
+      const response = await verifyPassword(password, groupId, "groups");
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
+      if (response) {
+        console.log("비밀번호 인증 성공");
         onSuccess(); 
-      } else if (response.status === 401) {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || "비밀번호가 틀렸습니다.");
-      } else {
-        setErrorMessage("비밀번호 확인 중 오류가 발생했습니다.");
       }
     } catch (error) {
-      console.error("비밀번호 확인 실패:", error);
-      setErrorMessage("서버와의 연결에 실패했습니다.");
+      console.error("비밀번호 확인 실패:", error.message);
+      setErrorMessage(error.message || "비밀번호 확인에 실패했습니다.");
     } finally {
       setIsVerifying(false);
     }
