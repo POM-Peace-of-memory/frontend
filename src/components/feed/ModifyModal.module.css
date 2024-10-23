@@ -13,68 +13,131 @@
 
 .modalContent {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 480px;
-  height: 335px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .modalHeading {
   font-size: 24px;
-  color: var(--black-black_282828, #282828);
   text-align: center;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: -0.72px;
+  margin-bottom: 20px;
 }
 
-.closeButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modifyForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftSide,
+.rightSide {
+  width: 45%;
 }
 
 .label {
   font-size: 16px;
-  margin-top: 40px;
   margin-bottom: 10px;
   display: block;
-  color: var(--black-black_282828, #282828);
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: -0.48px;
 }
 
-.input {
-  width: 400px;
-  height: 45px;
-  flex-shrink: 0;
-  margin-bottom: 60px;
-  border-radius: 6px;
-  border: 1px solid var(--gray-gray_DDDDDD, #ddd);
-  background: var(--gray-gray_FAFAFA, #fafafa);
-  color: var(--gray-gray_B8B8B8, #b8b8b8);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.42px;
-}
-
-.submitButton {
+.input,
+.textarea,
+.dateInput {
   width: 100%;
-  padding: 12px;
-  background-color: #000;
-  color: #fff;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.textarea {
+  height: 150px;
+}
+
+.fileInputWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.fileButton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  margin-left: 10px;
   cursor: pointer;
+}
+
+.imagePreview {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.removeImageButton {
+  background-color: #ff0000;
+  color: white;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.tagsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tagItem {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.removeTagButton {
+  background: none;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.publicToggle {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.publicToggle input {
+  margin-right: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }

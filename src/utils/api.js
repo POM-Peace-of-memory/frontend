@@ -152,6 +152,56 @@ export async function getPosts({
   return body;
 }
 
+export async function getPostDetail(postId) {
+  const response = await fetch(`${BASE_URL}/posts/${postId}`);
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("존재하지 않는 게시물입니다.");
+    }
+    throw new Error("게시물 상세 정보를 불러오는데 실패했습니다.");
+  }
+  const body = await response.json();
+  return body;
+}
+
+export async function updatePost(postId, postData) {
+  const response = await fetch(`${BASE_URL}/posts/${postId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+
+  if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error("비밀번호가 일치하지 않습니다.");
+    } else if (response.status === 400) {
+      throw new Error("잘못된 요청입니다.");
+    } else {
+      throw new Error("게시물 수정에 실패했습니다.");
+    }
+  }
+
+  const body = await response.json();
+  return body;
+}
+
+export async function getComment(postId, { page = 1, pageSize = 10 }) {
+  const queryParams = `?page=${page}&pageSize=${pageSize}`;
+  const response = await fetch(
+    `${BASE_URL}/posts/${postId}/comments${queryParams}`
+  );
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("존재하지 않는 게시물입니다.");
+    }
+    throw new Error("잘못된 요청입니다");
+  }
+  const body = await response.json();
+  return body;
+}
+
 export async function createComment(postId, commentData) {
   const response = await fetch(`${BASE_URL}/posts/${postId}/comments`, {
     method: "POST",
