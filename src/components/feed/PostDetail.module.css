@@ -1,71 +1,62 @@
 .postDetailContainer {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  padding: 10%;
   background-color: #fafafa;
 }
 
 .writer {
-  color: var(--black-black_282828, #282828);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.48px;
+  display: flex;
+  justify-content: flex-start;
 }
-
+.nickname {
+  display: inline-block;
+  color: #282828;
+  font-size: 16px;
+  font-weight: 400;
+  margin-right: 10px;
+}
 .line {
-  color: var(--gray-gray_B8B8B8, #b8b8b8);
+  display: inline-block;
+  color: #b8b8b8;
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.48px;
-  margin-left: 10px;
-}
-.postPrivacy {
-  color: var(--gray-gray_B8B8B8, #b8b8b8);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.48px;
   margin-left: 10px;
 }
 
-.edit {
-  color: var(--black-black_282828, #282828);
-  text-align: center;
+.actions {
+  display: flex;
+  justify-content: flex-end;
   font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.42px;
-  margin-left: 60%;
-}
-
-.delete {
+  cursor: pointer;
   color: var(--gray-gray_8D8D8D, #8d8d8d);
   text-align: center;
-  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.42px;
+}
+.edit {
+  color: #282828;
+  margin-left: auto;
+}
+.delete {
+  color: #8d8d8d;
   margin-left: 20px;
 }
 
 .titleSection {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-
 .titleSection h1 {
-  font-size: 28px;
+  color: var(--black-black_282828, #282828);
+  font-size: 30px;
+  font-style: normal;
   font-weight: 700;
-  margin-bottom: 10px;
+  line-height: normal;
+  letter-spacing: -0.9px;
 }
-
-.category {
+.titleSection span {
   color: var(--gray-gray_B8B8B8, #b8b8b8);
   font-size: 18px;
   font-style: normal;
@@ -74,9 +65,10 @@
   letter-spacing: -0.54px;
 }
 
-.contentTitle {
+.postInfo {
   display: flex;
-  margin-top: 42px;
+  justify-content: flex-start;
+  margin-top: 40px;
   color: var(--black-black_282828, #282828);
   font-size: 16px;
   font-style: normal;
@@ -85,36 +77,66 @@
   letter-spacing: -0.48px;
 }
 
-.viewsComments {
-  display: flex;
-  align-items: center;
+.views .commentCount {
+  margin-left: 20px;
   color: var(--gray-gray_8D8D8D, #8d8d8d);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.42px;
-  margin-left: 30px;
+}
+
+.imageSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+  height: 780px; 
+  flex-shrink: 0;
+  background-color: #f7f7f7; 
 }
 
 .imageSection img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  max-width: 100%; 
+  height: auto; 
+  object-fit: contain; 
 }
 
 .contentSection {
+  text-align: center;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .contentSection p {
-  font-size: 16px;
-  line-height: 1.6;
+  color: var(--black-black_282828, #282828);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: -0.6px;
+}
+
+.commentButton {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.commentButton:hover {
+  background-color: #333;
 }
 
 .commentSection {
   margin-top: 40px;
+  width: 100%;
+  display: flex;
 }
 
 .commentForm {
@@ -125,23 +147,12 @@
 
 .commentInput {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
-}
-
-.commentButton {
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 400px;
-  height: 50px;
-  margin: 12% auto 7%;
-  display: block;
+  resize: vertical;
 }
 
 .commentList {
@@ -166,6 +177,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
 }
 
 .commentActions {
@@ -175,6 +187,7 @@
 
 .commentText {
   margin-right: 10px;
+  color: #333;
 }
 
 button {
@@ -203,10 +216,13 @@ button img {
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-
   border-radius: 6px;
-  border: 1px solid var(--black-black_282828, #282828);
-  background: var(--gray-gray_FAFAFA, #fafafa);
+  background: #fafafa;
+  border: 1px solid #282828;
+}
+
+.pagination button:hover {
+  background-color: #f0f0f0;
 }
 
 .pagination .active {
