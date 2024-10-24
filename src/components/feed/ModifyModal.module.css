@@ -1,143 +1,225 @@
-.modalOverlay {
+.modifyModalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
 }
 
-.modalContent {
-  background-color: #fff;
-  padding: 40px;
+.modifyModalContainer {
+  position: relative;
+  background-color: white;
+  padding: 30px;
+  width: 70%;
   border-radius: 10px;
-  max-width: 900px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modalHeading {
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
   font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
+  cursor: pointer;
+  color: #999;
 }
 
-.error {
-  color: red;
-  text-align: center;
-  margin-bottom: 20px;
+.closeButton:hover {
+  color: #333;
 }
 
-.modifyForm {
+.modalTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--black-black_282828, #282828);
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}
+
+.modalForm {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.leftSide,
-.rightSide {
-  width: 45%;
+.formGroup {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
-.label {
+.formGroup label {
+  margin-bottom: 5px;
+  color: var(--black-black_282828, #282828);
   font-size: 16px;
-  margin-bottom: 10px;
-  display: block;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.48px;
 }
 
-.input,
-.textarea,
-.dateInput {
-  width: 100%;
+.input {
   padding: 10px;
-  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: var(--black-black_282828, #282828);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.42px;
+}
+
+.input::placeholder {
+  color: var(--gray-gray_B8B8B8, #b8b8b8);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.42px;
 }
 
 .textarea {
-  height: 150px;
-}
-
-.fileInputWrapper {
-  display: flex;
-  align-items: center;
-}
-
-.hiddenFileInput {
-  display: none;
-}
-
-.fileButton {
-  background-color: #007bff;
-  color: white;
   padding: 10px;
-  border: none;
+  height: 100px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
+  font-size: 14px;
 }
 
 .imagePreview {
-  margin-top: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin-top: 10px;
 }
 
 .previewImage {
-  max-width: 100%;
-  max-height: 200px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 
 .removeImageButton {
-  background-color: #ff0000;
+  background-color: red;
   color: white;
-  padding: 5px;
   border: none;
+  padding: 5px;
   border-radius: 5px;
-  margin-top: 10px;
   cursor: pointer;
 }
 
 .tagsWrapper {
   display: flex;
   flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
 }
 
 .tagItem {
-  background-color: #f0f0f0;
+  background-color: #007bff;
+  color: white;
   padding: 5px 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
   border-radius: 5px;
   display: flex;
   align-items: center;
 }
 
 .removeTagButton {
-  background: none;
+  background-color: transparent;
+  color: white;
   border: none;
   margin-left: 5px;
   cursor: pointer;
 }
 
-.publicToggle {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.publicToggle input {
-  margin-right: 10px;
-}
-
 .buttonContainer {
   display: flex;
+  width: 100%;
   justify-content: center;
+  align-items: center;
   margin-top: 20px;
+}
+
+.submitButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+}
+
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 30px;
+}
+
+.toggleLabel {
+  font-family: "Spoqa Han Sans Neo", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: black;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
 }

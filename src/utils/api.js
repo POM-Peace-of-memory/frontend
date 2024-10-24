@@ -142,7 +142,6 @@ export async function getPosts({
   groupId = "",
 }) {
   const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&keyword=${keyword}&isPublic=${isPublic}`;
-  console.log(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   if (!response.ok) {
     console.log(response.body);

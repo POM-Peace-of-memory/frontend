@@ -1,14 +1,16 @@
 import { useState } from "react";
 import styles from "./CommentModal.module.css";
+import { createComment } from "@utils/api";
 
 export default function CommentModal({
   closeModal,
   postId,
-  content,
+  initialContent = "",
   onSuccess,
 }) {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+  const [content, setContent] = useState(initialContent);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -17,8 +19,8 @@ export default function CommentModal({
     setIsSubmitting(true);
     setErrorMessage("");
 
-    if (!nickname.trim() || !password.trim()) {
-      setErrorMessage("닉네임과 비밀번호를 모두 입력해 주세요.");
+    if (!nickname.trim() || !password.trim() || !content.trim()) {
+      setErrorMessage("닉네임, 비밀번호, 그리고 댓글을 모두 입력해 주세요.");
       setIsSubmitting(false);
       return;
     }
@@ -30,28 +32,14 @@ export default function CommentModal({
     };
 
     try {
-      const response = await fetch(`/api/posts/${postId}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(commentData),
-      });
+      const data = await createComment(postId, commentData);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("댓글 등록 성공:", data);
-        onSuccess(data);
-        closeModal();
-      } else if (response.status === 400) {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || "댓글 등록에 실패했습니다.");
-      } else {
-        setErrorMessage("댓글 등록 중 오류가 발생했습니다.");
-      }
+      console.log("댓글 등록 성공:", data);
+      onSuccess(data);
+      closeModal();
     } catch (error) {
       console.error("API 요청 실패:", error);
-      setErrorMessage("서버와의 연결에 실패했습니다.");
+      setErrorMessage(error.message || "댓글 등록 중 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }
@@ -77,8 +65,10 @@ export default function CommentModal({
           <label className={styles.label}>댓글</label>
           <textarea
             className={styles.textarea}
+            placeholder="댓글을 입력해 주세요"
             value={content}
-            readOnly
+            onChange={(e) => setContent(e.target.value)}
+            required
           ></textarea>
           <label className={styles.label}>비밀번호 설정</label>
           <input
