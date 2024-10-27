@@ -1,87 +1,77 @@
 import { useState } from "react";
 import styles from "./CommentEditModal.module.css";
 
-const CommentEditModal = ({ comment, closeModal, onSuccess }) => {
-  const [nickname, setNickname] = useState(comment.author);
-  const [content, setContent] = useState(comment.text);
-  const [password, setPassword] = useState("");
+const CommentEditModal = ({
+  closeModal,
+  onEditSuccess,
+  content,
+  nickname,
+}) => {
+  const [editContent, setEditContent] = useState(content || "");
+  const [inputPassword, setInputPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleEditSubmit = async (event) => {
-    event.preventDefault();
+  const handleContentChange = (event) => {
+    setEditContent(event.target.value);
+  };
 
-    const updateData = {
-      nickname,
-      content,
-      password,
-    };
+  const handlePasswordChange = (event) => {
+    setInputPassword(event.target.value);
+  };
+
+  const handleEditClick = async () => {
+    setErrorMessage("");
+
+    if (!editContent.trim()) {
+      setErrorMessage("수정할 내용을 입력해 주세요.");
+      return;
+    }
+    if (!inputPassword.trim()) {
+      setErrorMessage("비밀번호를 입력해 주세요.");
+      return;
+    }
 
     try {
-      const response = await fetch(`/api/comments/${comment.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updateData),
-      });
-
-      if (response.ok) {
-        const updatedComment = await response.json();
-        onSuccess({
-          id: updatedComment.id,
-          author: updatedComment.nickname,
-          text: updatedComment.content,
-          date: new Date(updatedComment.createdAt).toLocaleString(),
-        });
-        closeModal();
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || "댓글 수정에 실패했습니다.");
-      }
+      await onEditSuccess(editContent, inputPassword);
+      closeModal();
     } catch (error) {
-      console.error("댓글 수정 실패:", error);
-      setErrorMessage("서버와의 연결에 실패했습니다.");
+      setErrorMessage(error.message || "댓글 수정에 실패했습니다.");
     }
   };
 
   return (
     <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <h2 className={styles.modalHeading}>댓글 수정</h2>
+      <div className={styles.modalContainer}>
         <button className={styles.closeButton} onClick={closeModal}>
-          ×
+          &times;
         </button>
-        <form onSubmit={handleEditSubmit}>
-          <label className={styles.label}>닉네임</label>
-          <input
-            className={styles.input}
-            type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
+        <h2 className={styles.modalTitle}>댓글 수정</h2>
 
-          <label className={styles.label}>내용</label>
-          <textarea
-            className={styles.textarea}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+        <label className={styles.label}>닉네임</label>
+        <input type="text" value={nickname} className={styles.input} disabled />
 
-          <label className={styles.label}>수정 권한 인증</label>
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="댓글 비밀번호를 입력해 주세요"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <label className={styles.label}>댓글</label>
+        <textarea
+          placeholder="수정할 내용을 입력해 주세요"
+          value={editContent}
+          onChange={handleContentChange}
+          className={styles.textarea}
+        />
 
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        <label className={styles.label}>수정 권한 인증</label>
+        <input
+          type="password"
+          placeholder="댓글 비밀번호를 입력해 주세요"
+          value={inputPassword}  
+          onChange={handlePasswordChange}
+          className={styles.input}
+        />
 
-          <button type="submit" className={styles.submitButton}>
-            수정하기
-          </button>
-        </form>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+
+        <button className={styles.submitButton} onClick={handleEditClick}>
+          수정하기
+        </button>
       </div>
     </div>
   );

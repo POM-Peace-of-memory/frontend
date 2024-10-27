@@ -8,12 +8,16 @@ import CommentEditModal from "../chueok/CommentEditModal";
 import CommentDeleteModal from "@components/chueok/CommentDeleteModal";
 import flowerImg from "@/assets/flower.svg";
 import commentCount from "@/assets/comment.svg";
+import editIcon from "@/assets/edit.svg";
+import deleteIcon from "@/assets/delete.svg";
+
 import {
   getPostDetail,
   getComment,
   createComment,
   deleteComment,
   updateComment,
+  deletePost,
 } from "@utils/api";
 
 const PostDetail = () => {
@@ -31,6 +35,7 @@ const PostDetail = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState({});
+  const [newCommentPassword, setNewCommentPassword] = useState("");
   const [showCommentDeleteModal, setShowCommentDeleteModal] = useState(false);
   const [deletingCommentId, setDeletingCommentId] = useState(null);
 
@@ -65,34 +70,38 @@ const PostDetail = () => {
   const handleCommentButtonClick = async (event) => {
     event.preventDefault();
     setShowCommentModal(true);
-    if (newComment.trim()) {
+
+    if (newComment.trim() && newCommentPassword.trim()) {
       try {
         const newCommentData = {
           content: newComment,
           nickname: "UserNickname",
-          password: "UserPassword",
+          password: newCommentPassword,
         };
         const createdComment = await createComment(postId, newCommentData);
-        handleCommentSuccess(createdComment);
+
+        handleCommentSuccess(createdComment, newCommentPassword);
       } catch (error) {
         setErrorMessage("댓글 등록에 실패했습니다.");
         console.error(error);
       }
     } else {
-      setErrorMessage("댓글 내용을 입력해 주세요.");
+      setErrorMessage("댓글 내용과 비밀번호를 확인해주세요.");
     }
   };
 
-  const handleCommentSuccess = (newCommentData) => {
+  const handleCommentSuccess = (newCommentData, password) => {
     const formattedDate = new Date(newCommentData.createdAt).toLocaleString();
     const commentObj = {
       id: newCommentData.id,
       nickname: newCommentData.nickname,
       createdAt: formattedDate,
       content: newCommentData.content,
+      password,
     };
     setComments([...comments, commentObj]);
     setNewComment("");
+    setNewCommentPassword("");
     setErrorMessage("");
   };
 
@@ -102,22 +111,36 @@ const PostDetail = () => {
     setShowEditModal(true);
   };
 
-  const handleEditCommentSuccess = async (updatedCommentContent, password) => {
+  const handleEditCommentSuccess = async (
+    updatedCommentContent,
+    inputPassword
+  ) => {
     try {
-      const updatedCommentData = { content: updatedCommentContent, password };
+      const updatedCommentData = {
+        content: updatedCommentContent,
+        password: inputPassword, 
+      };
+
       const updatedComment = await updateComment(
         editingCommentId,
         updatedCommentData
       );
+
       setComments(
         comments.map((comment) =>
-          comment.id === updatedComment.id ? updatedComment : comment
+          comment.id === updatedComment.id
+            ? { ...comment, content: updatedComment.content }
+            : comment
         )
       );
       setShowEditModal(false);
+      setErrorMessage("");
     } catch (error) {
-      setErrorMessage("댓글 수정에 실패했습니다.");
-      console.error(error);
+      if (error.message.includes("403")) {
+        setErrorMessage("비밀번호가 일치하지 않습니다.");
+      } else {
+        setErrorMessage(error.message || "댓글 수정에 실패했습니다.");
+      }
     }
   };
 
@@ -230,13 +253,13 @@ const PostDetail = () => {
                       className={styles.editButton}
                       onClick={() => handleEditCommentClick(comment)}
                     >
-                      <img src="src/assets/edit.svg" alt="수정" />
+                      <img src={editIcon} alt="수정" />
                     </button>
                     <button
                       className={styles.deleteButton}
                       onClick={() => handleDeleteCommentClick(comment.id)}
                     >
-                      <img src="src/assets/delete.svg" alt="삭제" />
+                      <img src={deleteIcon} alt="삭제" />
                     </button>
                   </div>
                 </div>
@@ -268,43 +291,52 @@ const PostDetail = () => {
             </button>
           </div>
 
-          {showCommentModal && (
-            <CommentModal
-              closeModal={() => setShowCommentModal(false)}
-              onSuccess={handleCommentSuccess}
-            />
-          )}
-
           {showModifyModal && (
             <ModifyModal
-              post={postDetail}
+              postId={postId}
+              onUpdate={fetchPostDetails}
               closeModal={() => setShowModifyModal(false)}
             />
           )}
-
           {showDeleteModal && (
-            <DeleteModal closeModal={() => setShowDeleteModal(false)} />
+            <DeleteModal
+              closeModal={() => setShowDeleteModal(false)}
+              onDelete={(password) => deletePost(postId, password)}
+            />
+          )}
+          {showCommentModal && (
+            <CommentModal
+              postId={postId}
+              newComment={newComment}
+              setNewComment={setNewComment}
+              onSuccess={handleCommentSuccess}
+              closeModal={() => setShowCommentModal(false)}
+            />
           )}
 
           {showEditModal && (
             <CommentEditModal
-              comment={commentToEdit}
+              postId={postId}
+              commentId={editingCommentId}
+              password={commentToEdit.password}
+              commentToEdit={commentToEdit}
+              content={commentToEdit.content}
+              nickname={commentToEdit.nickname}
+              onEditSuccess={handleEditCommentSuccess}
               closeModal={() => setShowEditModal(false)}
-              onSuccess={handleEditCommentSuccess}
             />
           )}
-
           {showCommentDeleteModal && (
             <CommentDeleteModal
+              postId={postId}
+              commentId={deletingCommentId}
+              onDelete={handleDeleteComment}
               closeModal={() => setShowCommentDeleteModal(false)}
-              onDelete={(password) =>
-                handleDeleteComment(deletingCommentId, password)
-              }
             />
           )}
         </>
       ) : (
-        <p>게시글을 불러오는 중입니다...</p>
+        <p>게시물을 불러오는 중입니다...</p>
       )}
     </div>
   );

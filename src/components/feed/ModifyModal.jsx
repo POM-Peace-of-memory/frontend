@@ -4,6 +4,7 @@ import Button from "@components/all/Button";
 import styles from "./ModifyModal.module.css";
 
 const ModifyModal = ({ postId, closeModal }) => {
+  const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
@@ -16,16 +17,22 @@ const ModifyModal = ({ postId, closeModal }) => {
 
   useEffect(() => {
     const fetchPostDetail = async () => {
+      if (!postId) {
+        console.error("postId가 유효하지 않습니다.");
+        return;
+      }
+
       try {
         const data = await getPostDetail(postId);
-        setTitle(data.title);
-        setContent(data.content);
-        setTags(data.tags);
-        setLocation(data.location);
-        setDate(data.date);
-        setPreviewImage(data.imageUrl);
+        setNickname(data.nickname || "");
+        setTitle(data.title || "");
+        setContent(data.content || "");
+        setTags(data.tags || []);
+        setLocation(data.location || "");
+        setDate(data.date || "");
+        setPreviewImage(data.imageUrl || "");
         setIsPublic(data.isPublic);
-        setConfirmMessage(data.confirmMessage);
+        setConfirmMessage(data.confirmMessage || "");
       } catch (error) {
         console.error("Error fetching post details:", error);
       }
@@ -70,6 +77,7 @@ const ModifyModal = ({ postId, closeModal }) => {
       }
 
       const updateData = {
+        nickname,
         title,
         content,
         tags,
@@ -99,9 +107,9 @@ const ModifyModal = ({ postId, closeModal }) => {
             <label>닉네임</label>
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="닉네임를 입력해 주세요"
+              value={nickname || ""}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임을 입력해 주세요"
               className={styles.input}
             />
           </div>
@@ -132,7 +140,7 @@ const ModifyModal = ({ postId, closeModal }) => {
             <label>제목</label>
             <input
               type="text"
-              value={title} 
+              value={title || ""}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="제목을 입력해주세요"
               className={styles.input}
@@ -143,11 +151,12 @@ const ModifyModal = ({ postId, closeModal }) => {
             <label>추억의 순간</label>
             <input
               type="date"
-              value={date}
+              value={date || ""}
               onChange={(e) => setDate(e.target.value)}
               className={styles.input}
             />
           </div>
+
           <div className={styles.formGroup}>
             <label>이미지</label>
             <input
@@ -190,7 +199,7 @@ const ModifyModal = ({ postId, closeModal }) => {
           <div className={styles.formGroup}>
             <label>본문</label>
             <textarea
-              value={content}
+              value={content || ""}
               onChange={(e) => setContent(e.target.value)}
               placeholder="본문 내용을 입력해주세요"
               className={styles.textarea}
@@ -201,7 +210,7 @@ const ModifyModal = ({ postId, closeModal }) => {
             <label>수정 권한 인증</label>
             <input
               type="text"
-              value={confirmMessage}
+              value={confirmMessage || ""}
               onChange={(e) => setConfirmMessage(e.target.value)}
               placeholder="수정 비밀번호를 입력해주세요"
               className={styles.input}
@@ -209,9 +218,7 @@ const ModifyModal = ({ postId, closeModal }) => {
           </div>
 
           <div className={styles.buttonContainer}>
-            <Button onClick={handleSubmit}>
-              수정하기
-            </Button>
+            <Button onClick={handleSubmit}>수정하기</Button>
           </div>
         </div>
       </div>

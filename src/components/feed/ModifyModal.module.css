@@ -115,7 +115,7 @@
 }
 
 .removeImageButton {
-  background-color: red;
+  background-color: rgb(249, 136, 136);
   color: white;
   border: none;
   padding: 5px;
@@ -131,7 +131,7 @@
 }
 
 .tagItem {
-  background-color: #007bff;
+  background-color: #5aa7f8;
   color: white;
   padding: 5px 10px;
   border-radius: 5px;
@@ -169,7 +169,7 @@
 .toggleWrapper {
   display: flex;
   align-items: center;
-  margin: 10px 0 30px;
+  margin: 10px 0 10px;
 }
 
 .toggleLabel {

@@ -186,6 +186,24 @@ export async function updatePost(postId, postData) {
   return body;
 }
 
+export async function deletePost(postId, password) {
+  const data = JSON.stringify({ postPassword: password });
+  const response = await fetch(`${BASE_URL}/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "게시물 삭제에 실패했습니다.");
+  }
+
+  return true;
+}
+
 export async function getComment(postId, { page = 1, pageSize = 10 }) {
   const queryParams = `?page=${page}&pageSize=${pageSize}`;
   const response = await fetch(
@@ -201,7 +219,7 @@ export async function getComment(postId, { page = 1, pageSize = 10 }) {
   return body;
 }
 
-export async function createComment(postId, commentData) {
+export const createComment = async (postId, commentData) => {
   const response = await fetch(`${BASE_URL}/posts/${postId}/comments`, {
     method: "POST",
     headers: {
@@ -209,24 +227,31 @@ export async function createComment(postId, commentData) {
     },
     body: JSON.stringify(commentData),
   });
+
   if (!response.ok) {
     throw new Error("댓글 등록에 실패했습니다.");
   }
-  const body = await response.json();
-  return body;
-}
+
+  return await response.json();
+};
 
 export async function updateComment(commentId, updatedData) {
   const response = await fetch(`${BASE_URL}/comments/${commentId}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(updatedData),
   });
+
+  if (response.status === 403) {
+    throw new Error("비밀번호가 일치하지 않습니다.");
+  }
+
   if (!response.ok) {
     throw new Error("댓글 수정에 실패했습니다.");
   }
+
   const body = await response.json();
   return body;
 }
