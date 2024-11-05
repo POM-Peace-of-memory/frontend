@@ -1,7 +1,6 @@
-// const BASE_URL = "https://d25099c5-86ab-44ab-95e4-dcb3a3f97104.mock.pstmn.io";
 const BASE_URL = "https://backend-vai1.onrender.com/api";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 6;
 
 export async function getGroups({
   page = 1,
@@ -15,7 +14,6 @@ export async function getGroups({
     throw new Error("데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();
-  console.log(body);
   return body;
 }
 
@@ -33,7 +31,6 @@ export async function createGroups(groupData) {
     throw new Error("데이터를 생성하는데 실패했습니다");
   }
   const body = await response.json();
-  console.log(body);
   return body;
 }
 
@@ -142,10 +139,8 @@ export async function getPosts({
   groupId = "",
 }) {
   const query = `page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&keyword=${keyword}&isPublic=${isPublic}`;
-  console.log(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   const response = await fetch(`${BASE_URL}/groups/${groupId}/posts?${query}`);
   if (!response.ok) {
-    console.log(response.body);
     throw new Error("게시글 목록 데이터를 불러오는데 실패했습니다");
   }
   const body = await response.json();

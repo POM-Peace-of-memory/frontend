@@ -3,7 +3,8 @@ import empty from "@assets/empty.svg";
 import styles from "./CardList.module.css";
 import Button from "@components/all/Button";
 import GroupCard from "@components/group/main/GroupCard";
-import MemoryCard from "../detail/MemoryCard";
+import MemoryCard from "@/components/group/detail/MemoryCard";
+import LoadingCard from "@/components/group/shared/LoadingCard";
 
 const emptyStateText = {
   group: {
@@ -16,7 +17,7 @@ const emptyStateText = {
   },
 };
 
-const CardList = ({ variant, cards }) => {
+const CardList = ({ variant, cards, isLoading }) => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
@@ -62,7 +63,19 @@ const CardList = ({ variant, cards }) => {
     </div>
   );
 
-  return <>{cards.length === 0 ? renderEmptyState() : renderCards()}</>;
+  return (
+    <>
+      {cards.length === 0 ? (
+        isLoading ? (
+          <LoadingCard />
+        ) : (
+          renderEmptyState()
+        )
+      ) : (
+        renderCards()
+      )}
+    </>
+  );
 };
 
 export default CardList;

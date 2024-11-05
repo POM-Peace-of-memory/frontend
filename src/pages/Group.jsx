@@ -12,7 +12,7 @@ import PageLayout from "@components/group/shared/PageLayout";
 export default function Group() {
   const { groupId } = useParams();
 
-  const { data, page, disabled, filter, setFilter, handleLoad } =
+  const { data, page, disabled, filter, setFilter, handleLoad, isLoading } =
     useLoadData(getPosts);
 
   const handleLoadMore = () => {
@@ -32,7 +32,6 @@ export default function Group() {
       keyword: filter.search,
       groupId,
     });
-    console.log(filter);
   }, [filter]);
 
   return (
@@ -40,8 +39,12 @@ export default function Group() {
       <Header />
       <GroupDetail groupId={groupId} />
       <SearchBar variant="memory" setFilter={setFilter} />
-      <CardList variant="memory" cards={data} />
-      <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
+      <CardList variant="memory" cards={data} isLoading={isLoading} />
+      <LoadMoreButton
+        disabled={disabled}
+        onClick={handleLoadMore}
+        isLoading={isLoading}
+      />
     </PageLayout>
   );
 }
