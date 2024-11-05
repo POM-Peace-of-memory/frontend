@@ -1,0 +1,52 @@
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px;
+}
+
+.skeletonCard {
+  padding: 20px;
+  width: 300px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  margin: 20px;
+}
+
+.skeletonBox {
+  width: 200px;
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    var(--gray-100) 25%,
+    var(--gray-200) 50%,
+    var(--gray-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 3s infinite;
+  margin: 10px;
+  border-radius: 4px;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 15px;
+  background: linear-gradient(
+    90deg,
+    var(--gray-100) 25%,
+    var(--gray-200) 50%,
+    var(--gray-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 3s infinite;
+}

@@ -16,7 +16,7 @@ export default function GroupList() {
     navigate("register");
   };
 
-  const { data, page, disabled, filter, setFilter, handleLoad } =
+  const { data, page, disabled, filter, setFilter, handleLoad, isLoading } =
     useLoadData(getGroups);
 
   const handleLoadMore = () => {
@@ -51,8 +51,12 @@ export default function GroupList() {
         search={search}
         setSearch={setSearch}
       />
-      <CardList variant="group" cards={searchedList} />
-      <LoadMoreButton disabled={disabled} onClick={handleLoadMore} />
+      <CardList variant="group" cards={searchedList} isLoading={isLoading} />
+      <LoadMoreButton
+        disabled={disabled}
+        onClick={handleLoadMore}
+        isLoading={isLoading}
+      />
     </PageLayout>
   );
 }

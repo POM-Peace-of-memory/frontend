@@ -1,4 +1,4 @@
-export default function LoadMoreButton({ onClick, disabled }) {
+export default function LoadMoreButton({ onClick, disabled, isLoading }) {
   return (
     !disabled && (
       <button
@@ -12,8 +12,9 @@ export default function LoadMoreButton({ onClick, disabled }) {
         }}
         className="typo-14-bold"
         onClick={onClick}
+        disabled={isLoading}
       >
-        더보기
+        {isLoading ? `로딩중...` : `더보기`}
       </button>
     )
   );
